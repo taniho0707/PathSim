@@ -10,6 +10,7 @@
 #include <QObject>
 #include <QPainter>
 
+#include "Map.h"
 
 class SimManage : public QObject{
 	Q_OBJECT
@@ -25,6 +26,10 @@ public:
 	explicit SimManage(QObject *parent = 0);
 
 	Q_INVOKABLE void test();
+
+private:
+	Map m_map;
+
 };
 
 #endif

@@ -49,13 +49,15 @@ SOURCES       = main.cpp \
 		Map.cpp \
 		Position.cpp \
 		SimManage.cpp \
-		MazeField.cpp moc_SimManage.cpp \
+		MazeField.cpp \
+		ParseHmaze.cpp moc_SimManage.cpp \
 		moc_MazeField.cpp
 OBJECTS       = main.o \
 		Map.o \
 		Position.o \
 		SimManage.o \
 		MazeField.o \
+		ParseHmaze.o \
 		moc_SimManage.o \
 		moc_MazeField.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -291,7 +293,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/PathSim1.0.0 || mkdir -p .tmp/PathSim1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/PathSim1.0.0/ && $(COPY_FILE) --parents Algorithm.h const.h Map.h Mouse.h Position.h SimManage.h MazeField.h .tmp/PathSim1.0.0/ && $(COPY_FILE) --parents main.cpp Map.cpp Position.cpp SimManage.cpp MazeField.cpp .tmp/PathSim1.0.0/ && (cd `dirname .tmp/PathSim1.0.0` && $(TAR) PathSim1.0.0.tar PathSim1.0.0 && $(COMPRESS) PathSim1.0.0.tar) && $(MOVE) `dirname .tmp/PathSim1.0.0`/PathSim1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/PathSim1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/PathSim1.0.0/ && $(COPY_FILE) --parents Algorithm.h const.h Map.h Mouse.h Position.h SimManage.h MazeField.h ParseHmaze.h .tmp/PathSim1.0.0/ && $(COPY_FILE) --parents main.cpp Map.cpp Position.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp .tmp/PathSim1.0.0/ && (cd `dirname .tmp/PathSim1.0.0` && $(TAR) PathSim1.0.0.tar PathSim1.0.0 && $(COMPRESS) PathSim1.0.0.tar) && $(MOVE) `dirname .tmp/PathSim1.0.0`/PathSim1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/PathSim1.0.0
 
 
 clean:compiler_clean 
@@ -409,6 +411,8 @@ moc_SimManage.cpp: /usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtGui/qfontinfo.h \
 		/usr/include/qt5/QtGui/qfont.h \
 		/usr/include/qt5/QtGui/qfontmetrics.h \
+		Map.h \
+		const.h \
 		SimManage.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) $(INCPATH) -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include SimManage.h -o moc_SimManage.cpp
 
@@ -522,9 +526,14 @@ moc_MazeField.cpp: /usr/include/qt5/QtQuick/QQuickPaintedItem \
 		/usr/include/qt5/QtCore/qeventloop.h \
 		/usr/include/qt5/QtGui/qcolor.h \
 		/usr/include/qt5/QtGui/qrgb.h \
-		/usr/include/qt5/QtGui/QColor \
-		/usr/include/qt5/QtGui/QPen \
-		/usr/include/qt5/QtGui/qpen.h \
+		/usr/include/qt5/QtWidgets/QApplication \
+		/usr/include/qt5/QtWidgets/qapplication.h \
+		/usr/include/qt5/QtGui/qcursor.h \
+		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		/usr/include/qt5/QtWidgets/qwidget.h \
+		/usr/include/qt5/QtCore/qmargins.h \
+		/usr/include/qt5/QtGui/qpaintdevice.h \
+		/usr/include/qt5/QtGui/qpalette.h \
 		/usr/include/qt5/QtGui/qbrush.h \
 		/usr/include/qt5/QtGui/qmatrix.h \
 		/usr/include/qt5/QtGui/qpolygon.h \
@@ -532,14 +541,26 @@ moc_MazeField.cpp: /usr/include/qt5/QtQuick/QQuickPaintedItem \
 		/usr/include/qt5/QtGui/qtransform.h \
 		/usr/include/qt5/QtGui/qpainterpath.h \
 		/usr/include/qt5/QtGui/qimage.h \
-		/usr/include/qt5/QtGui/qpaintdevice.h \
 		/usr/include/qt5/QtGui/qpixmap.h \
+		/usr/include/qt5/QtGui/qfontmetrics.h \
+		/usr/include/qt5/QtGui/qfontinfo.h \
+		/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		/usr/include/qt5/QtGui/qguiapplication.h \
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtGui/QColor \
+		/usr/include/qt5/QtGui/QPen \
+		/usr/include/qt5/QtGui/qpen.h \
+		/usr/include/qt5/QtGui/QBrush \
 		/usr/include/qt5/QtGui/QPainter \
 		/usr/include/qt5/QtGui/qpainter.h \
 		/usr/include/qt5/QtGui/qtextoption.h \
-		/usr/include/qt5/QtGui/qfontinfo.h \
-		/usr/include/qt5/QtGui/qfontmetrics.h \
 		/usr/include/qt5/QtCore/QRect \
+		/usr/include/qt5/QtGui/QClipboard \
+		/usr/include/qt5/QtGui/qclipboard.h \
+		Map.h \
+		const.h \
+		ParseHmaze.h \
+		/usr/include/qt5/QtCore/QString \
 		MazeField.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) $(INCPATH) -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include MazeField.h -o moc_MazeField.cpp
 
@@ -878,13 +899,19 @@ main.o: main.cpp /usr/include/qt5/QtWidgets/QApplication \
 		/usr/include/qt5/QtGui/qpainter.h \
 		/usr/include/qt5/QtGui/qtextoption.h \
 		/usr/include/qt5/QtGui/qpen.h \
+		Map.h \
+		const.h \
 		MazeField.h \
 		/usr/include/qt5/QtQuick/QQuickPaintedItem \
 		/usr/include/qt5/QtQuick/qquickpainteditem.h \
 		/usr/include/qt5/QtQuick/qquickitem.h \
 		/usr/include/qt5/QtGui/qaccessible.h \
 		/usr/include/qt5/QtGui/QColor \
-		/usr/include/qt5/QtGui/QPen
+		/usr/include/qt5/QtGui/QPen \
+		/usr/include/qt5/QtGui/QBrush \
+		/usr/include/qt5/QtGui/QClipboard \
+		/usr/include/qt5/QtGui/qclipboard.h \
+		ParseHmaze.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 Map.o: Map.cpp Map.h \
@@ -988,7 +1015,9 @@ SimManage.o: SimManage.cpp SimManage.h \
 		/usr/include/qt5/QtGui/qbrush.h \
 		/usr/include/qt5/QtGui/qfontinfo.h \
 		/usr/include/qt5/QtGui/qfont.h \
-		/usr/include/qt5/QtGui/qfontmetrics.h
+		/usr/include/qt5/QtGui/qfontmetrics.h \
+		Map.h \
+		const.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SimManage.o SimManage.cpp
 
 MazeField.o: MazeField.cpp MazeField.h \
@@ -1102,9 +1131,14 @@ MazeField.o: MazeField.cpp MazeField.h \
 		/usr/include/qt5/QtCore/qeventloop.h \
 		/usr/include/qt5/QtGui/qcolor.h \
 		/usr/include/qt5/QtGui/qrgb.h \
-		/usr/include/qt5/QtGui/QColor \
-		/usr/include/qt5/QtGui/QPen \
-		/usr/include/qt5/QtGui/qpen.h \
+		/usr/include/qt5/QtWidgets/QApplication \
+		/usr/include/qt5/QtWidgets/qapplication.h \
+		/usr/include/qt5/QtGui/qcursor.h \
+		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		/usr/include/qt5/QtWidgets/qwidget.h \
+		/usr/include/qt5/QtCore/qmargins.h \
+		/usr/include/qt5/QtGui/qpaintdevice.h \
+		/usr/include/qt5/QtGui/qpalette.h \
 		/usr/include/qt5/QtGui/qbrush.h \
 		/usr/include/qt5/QtGui/qmatrix.h \
 		/usr/include/qt5/QtGui/qpolygon.h \
@@ -1112,15 +1146,76 @@ MazeField.o: MazeField.cpp MazeField.h \
 		/usr/include/qt5/QtGui/qtransform.h \
 		/usr/include/qt5/QtGui/qpainterpath.h \
 		/usr/include/qt5/QtGui/qimage.h \
-		/usr/include/qt5/QtGui/qpaintdevice.h \
 		/usr/include/qt5/QtGui/qpixmap.h \
+		/usr/include/qt5/QtGui/qfontmetrics.h \
+		/usr/include/qt5/QtGui/qfontinfo.h \
+		/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		/usr/include/qt5/QtGui/qguiapplication.h \
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtGui/QColor \
+		/usr/include/qt5/QtGui/QPen \
+		/usr/include/qt5/QtGui/qpen.h \
+		/usr/include/qt5/QtGui/QBrush \
 		/usr/include/qt5/QtGui/QPainter \
 		/usr/include/qt5/QtGui/qpainter.h \
 		/usr/include/qt5/QtGui/qtextoption.h \
-		/usr/include/qt5/QtGui/qfontinfo.h \
-		/usr/include/qt5/QtGui/qfontmetrics.h \
-		/usr/include/qt5/QtCore/QRect
+		/usr/include/qt5/QtCore/QRect \
+		/usr/include/qt5/QtGui/QClipboard \
+		/usr/include/qt5/QtGui/qclipboard.h \
+		Map.h \
+		const.h \
+		ParseHmaze.h \
+		/usr/include/qt5/QtCore/QString
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MazeField.o MazeField.cpp
+
+ParseHmaze.o: ParseHmaze.cpp ParseHmaze.h \
+		/usr/include/qt5/QtCore/QString \
+		/usr/include/qt5/QtCore/qstring.h \
+		/usr/include/qt5/QtCore/qchar.h \
+		/usr/include/qt5/QtCore/qglobal.h \
+		/usr/include/qt5/QtCore/qconfig.h \
+		/usr/include/qt5/QtCore/qfeatures.h \
+		/usr/include/qt5/QtCore/qsystemdetection.h \
+		/usr/include/qt5/QtCore/qprocessordetection.h \
+		/usr/include/qt5/QtCore/qcompilerdetection.h \
+		/usr/include/qt5/QtCore/qglobalstatic.h \
+		/usr/include/qt5/QtCore/qatomic.h \
+		/usr/include/qt5/QtCore/qbasicatomic.h \
+		/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		/usr/include/qt5/QtCore/qgenericatomic.h \
+		/usr/include/qt5/QtCore/qatomic_msvc.h \
+		/usr/include/qt5/QtCore/qatomic_integrity.h \
+		/usr/include/qt5/QtCore/qoldbasicatomic.h \
+		/usr/include/qt5/QtCore/qatomic_vxworks.h \
+		/usr/include/qt5/QtCore/qatomic_power.h \
+		/usr/include/qt5/QtCore/qatomic_alpha.h \
+		/usr/include/qt5/QtCore/qatomic_armv7.h \
+		/usr/include/qt5/QtCore/qatomic_armv6.h \
+		/usr/include/qt5/QtCore/qatomic_armv5.h \
+		/usr/include/qt5/QtCore/qatomic_bfin.h \
+		/usr/include/qt5/QtCore/qatomic_ia64.h \
+		/usr/include/qt5/QtCore/qatomic_mips.h \
+		/usr/include/qt5/QtCore/qatomic_s390.h \
+		/usr/include/qt5/QtCore/qatomic_sh4a.h \
+		/usr/include/qt5/QtCore/qatomic_sparc.h \
+		/usr/include/qt5/QtCore/qatomic_gcc.h \
+		/usr/include/qt5/QtCore/qatomic_x86.h \
+		/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		/usr/include/qt5/QtCore/qatomic_unix.h \
+		/usr/include/qt5/QtCore/qmutex.h \
+		/usr/include/qt5/QtCore/qlogging.h \
+		/usr/include/qt5/QtCore/qflags.h \
+		/usr/include/qt5/QtCore/qtypeinfo.h \
+		/usr/include/qt5/QtCore/qtypetraits.h \
+		/usr/include/qt5/QtCore/qsysinfo.h \
+		/usr/include/qt5/QtCore/qbytearray.h \
+		/usr/include/qt5/QtCore/qrefcount.h \
+		/usr/include/qt5/QtCore/qnamespace.h \
+		/usr/include/qt5/QtCore/qarraydata.h \
+		/usr/include/qt5/QtCore/qstringbuilder.h \
+		Map.h \
+		const.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ParseHmaze.o ParseHmaze.cpp
 
 moc_SimManage.o: moc_SimManage.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_SimManage.o moc_SimManage.cpp

@@ -84,7 +84,7 @@ public:
 	 */
 	void removeWall(EMouseDirection angle){
 		char tmp = 1;
-		tmp << angle;
+		tmp = tmp << angle;
 		tmp = ~tmp;
 		data &= tmp;
 		return;
@@ -271,20 +271,18 @@ class Footmap{
 private:
 
 public:
-	char map[16][16];
+	unsigned short map[32][32];
 
 	Footmap(){
-		for(int i=0; i<16; ++i){
-			for(int j=0; j<16; ++j) map[i][j] = 255;
-		}
+		resetFootmap();
 	}
 
 	/**
 	 * @brief 歩数マップをクリアします
 	 */
 	void resetFootmap(){
-		for(int i=0; i<16; ++i){
-			for(int j=0; j<16; ++j) map[i][j] = 255;
+		for(int i=0; i<32; ++i){
+			for(int j=0; j<32; ++j) map[i][j] = 255;
 		}
 	}
 
@@ -296,7 +294,7 @@ public:
 	 * @return 設定した座標の歩数
 	 */
 	int getFootmap(int x, int y, int out){
-		if(x < 0 || x > 15 || y < 0 || y > 15) return out;
+		if(isOutside(x, y)) return out;
 		else return map[x][y];
 	}
 
@@ -306,11 +304,16 @@ public:
 	 * @param y 設定するy座標
 	 * @param data 設定する歩数
 	 */
-	void setFootmap(int x, int y, char data){
-		if(x < 0 || x > 15 || y < 0 || y > 15) return;
+	void setFootmap(int x, int y, int data){
+		if(isOutside(x, y)) return;
 		if(data > 255) map[x][y] = 255;
 		else map[x][y] = data;
 		return;
+	}
+
+	bool isOutside(int x, int  y){
+		if(x < 0 || x > 31 || y < 0 || y > 31) return true;
+		else return false;
 	}
 
 	~Footmap(){
@@ -325,7 +328,7 @@ public:
 class Path{
 private:
 
-	unsigned char currentPos;
+	unsigned int currentPos;
 
 public:
 
@@ -427,23 +430,23 @@ public:
  */
 class Map{
 private:
-
+	bool isPeripheryWall(int x, int y, int angle);
 
 public:
 	Map();
 
 	/**
-	 * @brief 一番左の壁がMSB，右から2番目の壁がLSB，下から順
+	 * @brief 一番上の壁がMSB，一番下の壁がLSB，左から順
 	 */
-	unsigned short column[16];
+	unsigned long column[31];
 	/**
-	 * @brief 一番左の壁がMSB，右から2番目の壁がLSB，下から順
+	 * @brief 一番右の壁がMSB，一番左の壁がLSB，下から順
 	 */
-	unsigned short row[15];
+	unsigned long row[31];
 	/**
-	 * @brief 一番左のマスがMSB，一番右のマスがLSB，下から順
+	 * @brief 一番右のマスがMSB，一番左のマスがLSB，下から順
 	 */
-	unsigned short reached[16];
+	unsigned long reached[32];
 
 
 	/**
@@ -540,12 +543,12 @@ public:
 	 * @brief =演算子のオーバーロード。Mapクラスを代入します
 	 * @bug できない
 	 */
-	Map& operator= (Map tmp){
-//		column = tmp.column;
-//		row = tmp.row;
-//		reached = tmp.reached;
-		return *this;
-	}
+	/* Map& operator= (Map *tmp){ */
+	/* 	/\* column = tmp->column; *\/ */
+	/* 	/\* row = tmp->row; *\/ */
+	/* 	/\* reached = tmp->reached; *\/ */
+	/* 	/\* return *this; *\/ */
+	/* } */
 
 
 	~Map();

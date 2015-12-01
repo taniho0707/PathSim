@@ -51,6 +51,7 @@ ApplicationWindow{
             Rectangle {
                 width: 1024+2; height: 1024+2
                 MazeField {
+                    id: mazefield
                     width: 1024; height: 1024
                     x: 0; y: 0
                     mazesize: 32
@@ -76,6 +77,7 @@ ApplicationWindow{
             x:30; y:40
             width: 120
             text: "Clipboard"
+            onClicked: mazefield.loadMazeFromClpbrd()
         }
         Button {
             id: button_file

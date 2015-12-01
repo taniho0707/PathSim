@@ -8,21 +8,21 @@
 Map::Map(){
 	resetMap();
 	resetReachedMap();
-	column[0] |= 32768;
+	addSingleWall(0, 0, E_AngleRight);
 }
 
 Map::~Map(){
 }
 
 void Map::resetMap(){
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < 31; i++) {
 		column[i] = 0;
-		if(i < 15) row[i] = 0;
+		row[i] = 0;
 	}
 }
 
 void Map::resetReachedMap(){
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < 32; i++) {
 		reached[i] = 0;
 	}
 }
@@ -46,55 +46,57 @@ void Map::setWall(int x, int y, EMouseAngle angle, Walldata wall){
 }
 
 void Map::addSingleWall(int x, int y, EMouseAngle angle){
-	if((x == 0 && angle == E_AngleLeft)
-			|| (x == 15 && angle == E_AngleRight)
-			|| (y == 0 && angle == E_AngleDown)
-			|| (y == 15 && angle == E_AngleUp)) return;
+	if(isPeripheryWall(x, y, angle)) return;
 	if(angle == E_AngleUp){
-		row[y] |= (32768 >> x);
+		row[y] |= (1 << x);
 	} else if(angle == E_AngleRight){
-		column[y] |= (32768 >> x);
+		column[x] |= (1 << y);
 	} else if(angle == E_AngleDown){
-		row[y-1] |= (32768 >> x);
+		addSingleWall(x, y-1, E_AngleUp);
 	} else if(angle == E_AngleLeft){
-		column[y] |= (32768 >> (x-1));
+		addSingleWall(x-1, y, E_AngleRight);
 	}
 }
 
 void Map::setSingleWall(int x, int y, EMouseAngle angle, int wall){
-	if((x == 0 && angle == E_AngleLeft)
-			|| (x == 15 && angle == E_AngleRight)
-			|| (y == 0 && angle == E_AngleDown)
-			|| (y == 15 && angle == E_AngleUp)) return;
-	int tmpx = (angle == 3) ? x-1 : x;
-	int tmpy = (angle == 2) ? y-1 : y;
-	if(angle % 2){
-		row[tmpy] |= (32768 >> tmpx);
-	} else {
-		column[tmpy] |= (32768 >> tmpx);
-	}
+	// if((x == 0 && angle == E_AngleLeft)
+	// 		|| (x == 15 && angle == E_AngleRight)
+	// 		|| (y == 0 && angle == E_AngleDown)
+	// 		|| (y == 15 && angle == E_AngleUp)) return;
+	// int tmpx = (angle == 3) ? x-1 : x;
+	// int tmpy = (angle == 2) ? y-1 : y;
+	// if(angle % 2){
+	// 	row[tmpy] |= (32768 >> tmpx);
+	// } else {
+	// 	column[tmpy] |= (32768 >> tmpx);
+	// }
 }
 
 
 int Map::isExistWall(int x, int y, EMouseAngle ang){
 	int ans = 0;
-	if((x == 0 && ang == E_AngleLeft)
-			|| (x == 15 && ang == E_AngleRight)
-			|| (y == 0 && ang == E_AngleDown)
-			|| (y == 15 && ang == E_AngleUp)) return 1;
+	if(isPeripheryWall(x, y, ang)) return 1;
 	if(ang == E_AngleUp){
-		ans = row[y] & (32768 >> x);
+		ans = row[y] & (1 << x);
 	} else if(ang == E_AngleRight) {
-		ans = column[y] & (32768 >> x);
+		ans = column[x] & (1 << y);
 	} else if(ang == E_AngleDown){
-		ans = row[y-1] & (32768 >> x);
+		ans = isExistWall(x, y-1, E_AngleUp);
 	} else if(ang == E_AngleLeft){
-		ans = column[y] & (32768 >> (x-1));
+		ans = isExistWall(x-1, y, E_AngleRight);
 	} else {
 		ans = 1;
 	}
 	if(ans) return 1;
 	else return 0;
+}
+
+bool Map::isPeripheryWall(int x, int y, int ang){
+	if((x == 0 && ang == E_AngleLeft)
+			|| (x == 31 && ang == E_AngleRight)
+			|| (y == 0 && ang == E_AngleDown)
+			|| (y == 31 && ang == E_AngleUp)) return true;
+	else return false;
 }
 
 void Map::setReached(int x, int y){
