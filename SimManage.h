@@ -6,10 +6,16 @@
 #define INCLUDED_SIMMANAGE_H
 
 #include <iostream>
+#include <sys/types.h>
+#include <dirent.h>
 
 #include <QObject>
 #include <QPainter>
+#include <QString>
+#include <QRegExp>
 
+#include "Walldata.h"
+#include "Triple.h"
 #include "Map.h"
 
 class SimManage : public QObject{
@@ -26,6 +32,8 @@ public:
 	explicit SimManage(QObject *parent = 0);
 
 	Q_INVOKABLE void test();
+
+	Q_INVOKABLE QStringList getPathfileList();
 
 private:
 	Map m_map;

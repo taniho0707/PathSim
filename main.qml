@@ -1,6 +1,5 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
-//import DrawingTest 1.0
 import MazeField 1.0
 
 ApplicationWindow{
@@ -13,17 +12,6 @@ ApplicationWindow{
     title: qsTr("PathSim")
     visible: true
 
-    // Button {
-    //     id: test
-    //     x: 179
-    //     y: 373
-    //     text: qsTr("つぶやく(&P)")
-    //     anchors.horizontalCenterOffset: 2
-    //     anchors.horizontalCenter: parent.horizontalCenter
-    //     transformOrigin: Item.TopLeft
-    //     onClicked: manage.test();
-    // }
-
     // TextArea {
     //     id: testText
     //     text: "AAA"
@@ -31,14 +19,6 @@ ApplicationWindow{
     //     y: 210
     //     anchors.horizontalCenterOffset: 2
     //     anchors.horizontalCenter: parent.horizontalCenter
-    // }
-
-    // Label {
-    //     id: testLabel
-    //     x: 97
-    //     y: 177
-    //     text: qsTr("スクリーンネーム：")
-    //     horizontalAlignment: Text.AlignHCenter
     // }
 
     Rectangle {
@@ -100,6 +80,7 @@ ApplicationWindow{
     }
 
     Rectangle {
+        id: rect_algorithm
         x: 560; y: 180
         width: 180; height: 90
         color: "whitesmoke"
@@ -114,8 +95,25 @@ ApplicationWindow{
             id: combo_algorithm
             x:30; y:40
             width: 100
-            model: ["Adachi", "Adachi2"]
+            model: manage.getPathfileList()
+            // model: CheckPath.getPathfileList()
         }
+        // function getPathfileList(){
+        //     var app = Application.currentApplication();
+        //     app.includeStandardAdditions = true;
+        //     app.doShellScript(" echo 1 " );
+        //     var array = [];
+        //     // var folder = new Folder ("./libpath/");
+        //     // var fileList = folder.getFiles();
+        //     // for (var i=0; i<fileList.length; i++){
+        //     //     var str = fileList[i].fullName;
+        //     //     if (str.match(new RegExp("\.so$", ""))){
+        //     //         array.push(str);
+        //     //     }
+        //     // }
+        //     return array;
+        // }
+
         // Button {
         //     id: button_NFC
         //     x:30; y:100
@@ -125,3 +123,4 @@ ApplicationWindow{
     }
 
 }
+

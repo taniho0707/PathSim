@@ -15,7 +15,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_QML_LIB -DQT_WIDGETS_LIB -DQT_NETWORK_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIE $(DEFINES)
 CXXFLAGS      = -m64 -pipe -std=c++11 -O2 -std=c++0x -Wall -W -D_REENTRANT -fPIE $(DEFINES)
-INCPATH       = -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I. -I. -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I.
+INCPATH       = -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I. -I. -Ilib -I/usr/include/qt5 -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I.
 LINK          = g++
 LFLAGS        = -m64 -Wl,-O1
 LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -lQt5Quick -L/usr/lib/x86_64-linux-gnu -lQt5Qml -lQt5Widgets -lQt5Network -lQt5Gui -lQt5Core -lGL -lpthread 
@@ -50,7 +50,10 @@ SOURCES       = main.cpp \
 		Position.cpp \
 		SimManage.cpp \
 		MazeField.cpp \
-		ParseHmaze.cpp moc_SimManage.cpp \
+		ParseHmaze.cpp \
+		lib/Walldata.cpp \
+		lib/Pathdata.cpp \
+		lib/Footmap.cpp moc_SimManage.cpp \
 		moc_MazeField.cpp
 OBJECTS       = main.o \
 		Map.o \
@@ -58,6 +61,9 @@ OBJECTS       = main.o \
 		SimManage.o \
 		MazeField.o \
 		ParseHmaze.o \
+		Walldata.o \
+		Pathdata.o \
+		Footmap.o \
 		moc_SimManage.o \
 		moc_MazeField.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -293,7 +299,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/PathSim1.0.0 || mkdir -p .tmp/PathSim1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/PathSim1.0.0/ && $(COPY_FILE) --parents Algorithm.h const.h Map.h Mouse.h Position.h SimManage.h MazeField.h ParseHmaze.h .tmp/PathSim1.0.0/ && $(COPY_FILE) --parents main.cpp Map.cpp Position.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp .tmp/PathSim1.0.0/ && (cd `dirname .tmp/PathSim1.0.0` && $(TAR) PathSim1.0.0.tar PathSim1.0.0 && $(COMPRESS) PathSim1.0.0.tar) && $(MOVE) `dirname .tmp/PathSim1.0.0`/PathSim1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/PathSim1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/PathSim1.0.0/ && $(COPY_FILE) --parents Algorithm.h const.h Map.h Mouse.h Position.h SimManage.h MazeField.h ParseHmaze.h .tmp/PathSim1.0.0/ && $(COPY_FILE) --parents main.cpp Map.cpp Position.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp lib/Walldata.cpp lib/Pathdata.cpp lib/Footmap.cpp .tmp/PathSim1.0.0/ && (cd `dirname .tmp/PathSim1.0.0` && $(TAR) PathSim1.0.0.tar PathSim1.0.0 && $(COMPRESS) PathSim1.0.0.tar) && $(MOVE) `dirname .tmp/PathSim1.0.0`/PathSim1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/PathSim1.0.0
 
 
 clean:compiler_clean 
@@ -411,8 +417,10 @@ moc_SimManage.cpp: /usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtGui/qfontinfo.h \
 		/usr/include/qt5/QtGui/qfont.h \
 		/usr/include/qt5/QtGui/qfontmetrics.h \
-		Map.h \
+		lib/Walldata.h \
 		const.h \
+		lib/Triple.h \
+		Map.h \
 		SimManage.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) $(INCPATH) -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include SimManage.h -o moc_SimManage.cpp
 
@@ -559,6 +567,8 @@ moc_MazeField.cpp: /usr/include/qt5/QtQuick/QQuickPaintedItem \
 		/usr/include/qt5/QtGui/qclipboard.h \
 		Map.h \
 		const.h \
+		lib/Walldata.h \
+		lib/Triple.h \
 		ParseHmaze.h \
 		/usr/include/qt5/QtCore/QString \
 		MazeField.h
@@ -899,8 +909,10 @@ main.o: main.cpp /usr/include/qt5/QtWidgets/QApplication \
 		/usr/include/qt5/QtGui/qpainter.h \
 		/usr/include/qt5/QtGui/qtextoption.h \
 		/usr/include/qt5/QtGui/qpen.h \
-		Map.h \
+		lib/Walldata.h \
 		const.h \
+		lib/Triple.h \
+		Map.h \
 		MazeField.h \
 		/usr/include/qt5/QtQuick/QQuickPaintedItem \
 		/usr/include/qt5/QtQuick/qquickpainteditem.h \
@@ -915,12 +927,17 @@ main.o: main.cpp /usr/include/qt5/QtWidgets/QApplication \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 Map.o: Map.cpp Map.h \
-		const.h
+		const.h \
+		lib/Walldata.h \
+		lib/Triple.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Map.o Map.cpp
 
 Position.o: Position.cpp Position.h \
 		const.h \
-		Map.h
+		lib/Pair.h \
+		Map.h \
+		lib/Walldata.h \
+		lib/Triple.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Position.o Position.cpp
 
 SimManage.o: SimManage.cpp SimManage.h \
@@ -1016,8 +1033,10 @@ SimManage.o: SimManage.cpp SimManage.h \
 		/usr/include/qt5/QtGui/qfontinfo.h \
 		/usr/include/qt5/QtGui/qfont.h \
 		/usr/include/qt5/QtGui/qfontmetrics.h \
-		Map.h \
-		const.h
+		lib/Walldata.h \
+		const.h \
+		lib/Triple.h \
+		Map.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SimManage.o SimManage.cpp
 
 MazeField.o: MazeField.cpp MazeField.h \
@@ -1164,6 +1183,8 @@ MazeField.o: MazeField.cpp MazeField.h \
 		/usr/include/qt5/QtGui/qclipboard.h \
 		Map.h \
 		const.h \
+		lib/Walldata.h \
+		lib/Triple.h \
 		ParseHmaze.h \
 		/usr/include/qt5/QtCore/QString
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MazeField.o MazeField.cpp
@@ -1214,8 +1235,21 @@ ParseHmaze.o: ParseHmaze.cpp ParseHmaze.h \
 		/usr/include/qt5/QtCore/qarraydata.h \
 		/usr/include/qt5/QtCore/qstringbuilder.h \
 		Map.h \
-		const.h
+		const.h \
+		lib/Walldata.h \
+		lib/Triple.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ParseHmaze.o ParseHmaze.cpp
+
+Walldata.o: lib/Walldata.cpp lib/Walldata.h \
+		const.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Walldata.o lib/Walldata.cpp
+
+Pathdata.o: lib/Pathdata.cpp lib/Pathdata.h \
+		const.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Pathdata.o lib/Pathdata.cpp
+
+Footmap.o: lib/Footmap.cpp lib/Footmap.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Footmap.o lib/Footmap.cpp
 
 moc_SimManage.o: moc_SimManage.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_SimManage.o moc_SimManage.cpp

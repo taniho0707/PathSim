@@ -6,10 +6,12 @@ TEMPLATE = app
 # TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += .
+INCLUDEPATH += lib
 CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++11
 QT += qml quick widgets network gui
 
 # Input
 HEADERS += Algorithm.h const.h Map.h Mouse.h Position.h SimManage.h MazeField.h ParseHmaze.h
-SOURCES += main.cpp Map.cpp Position.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp
+#Walldata.h
+SOURCES += main.cpp Map.cpp Position.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp lib/Walldata.cpp lib/Pathdata.cpp lib/Footmap.cpp

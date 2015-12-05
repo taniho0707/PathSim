@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_SimManage_t {
-    QByteArrayData data[3];
-    char stringdata[17];
+    QByteArrayData data[4];
+    char stringdata[33];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -31,9 +31,10 @@ static const qt_meta_stringdata_SimManage_t qt_meta_stringdata_SimManage = {
     {
 QT_MOC_LITERAL(0, 0, 9),
 QT_MOC_LITERAL(1, 10, 4),
-QT_MOC_LITERAL(2, 15, 0)
+QT_MOC_LITERAL(2, 15, 0),
+QT_MOC_LITERAL(3, 16, 15)
     },
-    "SimManage\0test\0\0"
+    "SimManage\0test\0\0getPathfileList\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -43,7 +44,7 @@ static const uint qt_meta_data_SimManage[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -51,10 +52,12 @@ static const uint qt_meta_data_SimManage[] = {
        0,       // signalCount
 
  // methods: name, argc, parameters, tag, flags
-       1,    0,   19,    2, 0x02,
+       1,    0,   24,    2, 0x02,
+       3,    0,   25,    2, 0x02,
 
  // methods: parameters
     QMetaType::Void,
+    QMetaType::QStringList,
 
        0        // eod
 };
@@ -65,10 +68,11 @@ void SimManage::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         SimManage *_t = static_cast<SimManage *>(_o);
         switch (_id) {
         case 0: _t->test(); break;
+        case 1: { QStringList _r = _t->getPathfileList();
+            if (_a[0]) *reinterpret_cast< QStringList*>(_a[0]) = _r; }  break;
         default: ;
         }
     }
-    Q_UNUSED(_a);
 }
 
 const QMetaObject SimManage::staticMetaObject = {
@@ -96,13 +100,13 @@ int SimManage::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 2;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 1)
+        if (_id < 2)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }
