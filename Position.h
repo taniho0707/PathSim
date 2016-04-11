@@ -4,8 +4,9 @@
  * @file Position.h
  */
 
+#include <utility>
+
 #include "const.h"
-#include "Pair.h"
 #include "Map.h"
 
 
@@ -26,9 +27,9 @@ public:
 
 	Position();
 
-	void setPosition(Pair<char>, EMouseAngle);
+	void setPosition(std::pair<char, char>, EMouseAngle);
 	void setNextAngle(EMotion);
-	Pair<char> getCoordinate();
+	std::pair<char, char> getCoordinate();
 	EMouseAngle getAngle();
 	EMouseAngle getReverseAngle(EMouseAngle);
 	void moveStraight();

@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import MazeField 1.0
+import PathField 1.0
 
 ApplicationWindow{
     id: applicationWindow1
@@ -35,6 +36,12 @@ ApplicationWindow{
                     width: 1024; height: 1024
                     x: 0; y: 0
                     mazesize: 32
+                    transform: Scale { origin.x: 0; origin.y: 0; xScale: 1; yScale: 1}
+                }
+                PathField {
+                    id: pathfield
+                    width: 1024; height: 1024
+                    x: 0; y: 0
                     transform: Scale { origin.x: 0; origin.y: 0; xScale: 1; yScale: 1}
                 }
             }
@@ -82,7 +89,7 @@ ApplicationWindow{
     Rectangle {
         id: rect_algorithm
         x: 560; y: 180
-        width: 180; height: 90
+        width: 250; height: 90
         color: "whitesmoke"
         radius: 5
         Label {
@@ -94,7 +101,7 @@ ApplicationWindow{
         ComboBox {
             id: combo_algorithm
             x:30; y:40
-            width: 100
+            width: 180
             model: manage.getPathfileList()
             // model: CheckPath.getPathfileList()
         }

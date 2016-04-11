@@ -6,6 +6,7 @@
 #include <QQuickView>
 #include "SimManage.h"
 #include "MazeField.h"
+#include "PathField.h"
 
 // #include "const.h"
 // #include "Map.h"
@@ -19,6 +20,7 @@ int main(int argc, char **argv){
 	QTextCodec::setCodecForLocale(QTextCodec::codecForLocale());
 
 	qmlRegisterType<MazeField>("MazeField", 1, 0, "MazeField");
+	qmlRegisterType<PathField>("PathField", 1, 0, "PathField");
 	QQmlApplicationEngine engine("main.qml");
 
 	SimManage manage;

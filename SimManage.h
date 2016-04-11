@@ -15,7 +15,6 @@
 #include <QRegExp>
 
 #include "Walldata.h"
-#include "Triple.h"
 #include "Map.h"
 
 class SimManage : public QObject{

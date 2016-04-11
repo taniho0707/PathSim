@@ -12,9 +12,9 @@ Position::Position(){
 	angle = E_AngleUp;
 }
 
-void Position::setPosition(Pair<char> t, EMouseAngle a){
-	x = t.x;
-	y = t.y;
+void Position::setPosition(std::pair<char, char> t, EMouseAngle a){
+	x = t.first;
+	y = t.second;
 	angle = a;
 }
 
@@ -98,10 +98,10 @@ void Position::setNextAngle(EMotion motion){
 	}
 }
 
-Pair<char> Position::getCoordinate(){
-	Pair<char> tmp;
-	tmp.x = x;
-	tmp.y = y;
+std::pair<char, char> Position::getCoordinate(){
+	std::pair<char, char> tmp;
+	tmp.first = x;
+	tmp.second = y;
 	return tmp;
 }
 

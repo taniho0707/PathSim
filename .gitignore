@@ -3,3 +3,4 @@ TAGS
 PathSim
 *.o
 plan.org
+moc_*

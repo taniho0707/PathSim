@@ -9,7 +9,6 @@
 #include "const.h"
 
 #include "Walldata.h"
-#include "Triple.h"
 
 
 /**

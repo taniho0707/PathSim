@@ -6,6 +6,7 @@
 #define INCLUDED_PATHDATA_H
 
 #include "const.h"
+#include "Graph.h"
 
 class Pathdata{
 private:
