@@ -4,3 +4,4 @@ PathSim
 *.o
 plan.org
 moc_*
+Makefile
