@@ -6,6 +6,8 @@ Node::Node(uint16_t n){
 	cost = MAX;
 }
 
+Node::~Node(){}
+
 std::vector<Node *> getConnectedNodes(){
 	
 }
@@ -18,3 +20,6 @@ uint16_t getCost(Node *){
 	
 }
 
+uint16_t getNumber(){
+	
+}

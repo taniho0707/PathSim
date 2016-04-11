@@ -1,21 +1,20 @@
 /**
  * @file Graph.h
+ * @brief 迷路データを構成するノードの集合体
+ *        迷路とノード番号の管理も担う
  */
 
-#ifndef INCLUDED_GRAPH_H
-#define INCLUDED_GRAPH_H
+#pragma once
 
 #include <utility>
-#include <map>
+#include <vector>
 
 #include "Node.h"
-// #include "Edge.h"
 #include "Map.h"
 
 class Graph{
 private:
-	std::map<int, Node> nodes;
-//	map<int, Edge> edges;
+	std::vector<Node> nodes;
 	
 
 public:
@@ -25,5 +24,3 @@ public:
 	int connectNodes(const int coor1, const int coor2);
 	int disconnectNodes(const int coor1, const int coor2);
 };
-
-#endif

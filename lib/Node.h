@@ -24,6 +24,7 @@ public:
 	std::vector<Node *> getConnectedNodes();
 	bool isConnectedNode(Node&);
 	uint16_t getCost(Node *);
+	uint16_t getNumber();
 	
 	~Node();
 };
