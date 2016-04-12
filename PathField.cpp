@@ -32,16 +32,11 @@ void* PathField::loadLibOrDie(const string& path) {
 void PathField::loadPath(QString lib){
 	const auto loadlib = loadLibOrDie("./libpath/libpathbasic1.so");
 	// const auto loadlib = loadLibOrDie(lib.toStdString());
-	const auto createPathClass = (create_p*)(loadFuncOrDie(loadlib, "CreateMyPath"));
+	typedef int (*func_getpath)();
+	func_getpath loadFunction = (func_getpath)(loadFuncOrDie(loadlib, "getPath"));
 	
-	Path* p = createPathClass();
-
-	Pathdata a;
-	Map b;
-	pair<uint32_t, uint32_t> c;
+	cout << loadFunction() << endl;
 	
-	cout << p->getPath(a, b, c) << endl;
-
 	dlclose(loadlib);
 	// PathData m_path;
 	

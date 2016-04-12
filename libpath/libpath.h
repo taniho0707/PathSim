@@ -5,21 +5,8 @@
 
 #pragma once
 
-#include <utility>
-#include <memory>
-
 #include "Pathdata.h"
 #include "Map.h"
 
-class Path{
-private:
-	
-public:
-	Path();
-	
-	virtual int getPath(Pathdata& path, const Map& map, const std::pair<uint32_t, uint32_t>& pair);
+extern "C" int getPath();
 
-	virtual ~Path();
-};
-
-typedef Path* create_p();
