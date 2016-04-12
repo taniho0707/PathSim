@@ -114,7 +114,7 @@ ApplicationWindow{
             x:30; y:40
             width: 120
             text: "DrawPath"
-            onClicked: "./libpath/" + pathfield.loadPath(combo_algorithm.currentText);
+            onClicked: pathfield.loadPath("./libpath/" + combo_algorithm.currentText);
         }
     }
 }

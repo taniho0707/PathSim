@@ -26,12 +26,12 @@ void* PathField::loadLibOrDie(const string& path) {
 		cerr << "Cannot load library: " << dlerror() << endl;
 		exit(EXIT_FAILURE);
 	}
+	cout << "loaded library " << path << endl;
 	return lib;
 }
 
 void PathField::loadPath(QString lib){
-	const auto loadlib = loadLibOrDie("./libpath/libpathbasic1.so");
-	// const auto loadlib = loadLibOrDie(lib.toStdString());
+	const auto loadlib = loadLibOrDie(lib.toStdString());
 	typedef int (*func_getpath)();
 	func_getpath loadFunction = (func_getpath)(loadFuncOrDie(loadlib, "getPath"));
 	
