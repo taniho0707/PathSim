@@ -5,3 +5,4 @@ PathSim
 plan.org
 moc_*
 Makefile
+*.so
