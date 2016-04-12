@@ -2,8 +2,7 @@
  * @file PathField.h
  */
 
-#ifndef INCLUDED_PATHFIELD_H
-#define INCLUDED_PATHFIELD_H
+#pragma once
 
 #include <QQuickPaintedItem>
 #include <QApplication>
@@ -13,8 +12,15 @@
 #include <QPainter>
 #include <QRect>
 
+#include <dlfcn.h>
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <memory>
+
 #include "Map.h"
 #include "Pathdata.h"
+#include "libpath/libpath.h"
 
 class PathField : public QQuickPaintedItem{
 	Q_OBJECT
@@ -31,6 +37,8 @@ public:
 private:
 	Pathdata m_path;
 
+	void* loadLibOrDie(const std::string& path);
+	void* loadFuncOrDie(void* lib, const std::string& func_name);
+
 };
 
-#endif

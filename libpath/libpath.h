@@ -3,10 +3,11 @@
  * @brief 最短パス生成のテンプレートクラス
  */
 
-#ifndef INCLUDED_LIBPATH_H
-#define INCLUDED_LIBPATH_H
+#pragma once
 
-#include "Pair.h"
+#include <utility>
+#include <memory>
+
 #include "Pathdata.h"
 #include "Map.h"
 
@@ -19,9 +20,8 @@ public:
 		pathdata = Pathdata();
 	}
 
-	virtual int getPath(Pathdata& path, const Map& map, const Pair<int>& pair);
+	int getPath(Pathdata& path, const Map& map, const std::pair<uint32_t, uint32_t>& pair);
 
 	~Path();
 };
 
-#endif
