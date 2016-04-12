@@ -12,16 +12,7 @@ ApplicationWindow{
     color: "dimgray"
     title: qsTr("PathSim")
     visible: true
-
-    // TextArea {
-    //     id: testText
-    //     text: "AAA"
-    //     x: 97
-    //     y: 210
-    //     anchors.horizontalCenterOffset: 2
-    //     anchors.horizontalCenter: parent.horizontalCenter
-    // }
-
+    
     Rectangle {
         width: 528; height: 528
         x: 10; y: 10
@@ -47,7 +38,7 @@ ApplicationWindow{
             }
         }
     }
-
+    
     Rectangle {
         x: 560; y: 10
         width: 180; height: 150
@@ -85,7 +76,7 @@ ApplicationWindow{
             model: [1, 2, 3, 4, 5]
         }
     }
-
+    
     Rectangle {
         id: rect_algorithm
         x: 560; y: 180
@@ -105,29 +96,25 @@ ApplicationWindow{
             model: manage.getPathfileList()
             // model: CheckPath.getPathfileList()
         }
-        // function getPathfileList(){
-        //     var app = Application.currentApplication();
-        //     app.includeStandardAdditions = true;
-        //     app.doShellScript(" echo 1 " );
-        //     var array = [];
-        //     // var folder = new Folder ("./libpath/");
-        //     // var fileList = folder.getFiles();
-        //     // for (var i=0; i<fileList.length; i++){
-        //     //     var str = fileList[i].fullName;
-        //     //     if (str.match(new RegExp("\.so$", ""))){
-        //     //         array.push(str);
-        //     //     }
-        //     // }
-        //     return array;
-        // }
-
-        // Button {
-        //     id: button_NFC
-        //     x:30; y:100
-        //     width: 60
-        //     text: "NFC"
-        // }
     }
-
+    
+    Rectangle {
+        x: 560; y: 290
+        width: 180; height: 90
+        color: "whitesmoke"
+        radius: 5
+        Label {
+            x: 10; y: 10
+            id: label_drawing
+            font.pixelSize: 18
+            text: qsTr("drawing")
+        }
+        Button {
+            id: button_drawpath
+            x:30; y:40
+            width: 120
+            text: "DrawPath"
+            onClicked: "./libpath/" + pathfield.loadPath(combo_algorithm.currentText);
+        }
+    }
 }
-

@@ -9,6 +9,7 @@ INCLUDEPATH += .
 INCLUDEPATH += lib graph
 LIBS += -ldl
 CONFIG += c++11
+QMAKE_LFLAGS += -Wl,-E
 QMAKE_CXXFLAGS += -std=c++11
 QT += qml quick widgets network gui
 

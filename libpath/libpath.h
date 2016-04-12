@@ -13,15 +13,13 @@
 
 class Path{
 private:
-	Pathdata pathdata;
 	
 public:
-	Path(){
-		pathdata = Pathdata();
-	}
+	Path();
+	
+	virtual int getPath(Pathdata& path, const Map& map, const std::pair<uint32_t, uint32_t>& pair);
 
-	int getPath(Pathdata& path, const Map& map, const std::pair<uint32_t, uint32_t>& pair);
-
-	~Path();
+	virtual ~Path();
 };
 
+typedef Path* create_p();
