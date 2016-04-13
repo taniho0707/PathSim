@@ -30,7 +30,7 @@ uint16_t Graph::getNodeNumFromCoord(const int16_t x, const int16_t y, const Wall
 		if(a == WallAngle::SOUTH) return getNodeNumFromCoord(x, y-1, WallAngle::NORTH);
 		else if(a == WallAngle::WEST) return getNodeNumFromCoord(x-1, y, WallAngle::EAST);
 		else if(a == WallAngle::NORTH) return x+(y*16);
-		else return return 120+x+(y*15);
+		else return 120+x+(y*15);
 	} else {
 		return 0;
 	}

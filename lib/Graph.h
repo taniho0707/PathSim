@@ -38,5 +38,5 @@ public:
 
 	Node getNode(const int16_t x, const int16_t y, const WallAngle a);
 
-	static uint16_t getNodeNumFromCoord(const int16_t x, const int16_t y, const WallAngle a);
+	uint16_t getNodeNumFromCoord(const int16_t x, const int16_t y, const WallAngle a);
 };
