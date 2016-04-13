@@ -32,17 +32,26 @@ void* PathField::loadLibOrDie(const string& path) {
 
 void PathField::loadPath(QString lib){
 	const auto loadlib = loadLibOrDie(lib.toStdString());
-	typedef int (*func_getpath)();
-	func_getpath loadFunction = (func_getpath)(loadFuncOrDie(loadlib, "getPath"));
+	typedef int (*func_getpath)(Pathdata&, Map&);
+	auto loadFunction = (func_getpath)(loadFuncOrDie(loadlib, "getPath"));
+
+	Pathdata p;
+	Map m;
 	
-	cout << loadFunction() << endl;
+	cout << loadFunction(p, m) << endl;
 	
 	dlclose(loadlib);
 	// PathData m_path;
 	
+	PathField::update();
 }
 
 void PathField::paint(QPainter *painter){
-	
+	QPen pen(QColor("gold"), 2);
+	QBrush brush(QColor("gold"));
+	QLine line(0, 0, 1, 1);
+	painter->setPen(pen);
+	painter->setRenderHints(QPainter::Antialiasing, true);
+	painter->drawLine(line);
 }
 

@@ -11,6 +11,7 @@
 #include <QBrush>
 #include <QPainter>
 #include <QRect>
+#include <QLine>
 
 #include <dlfcn.h>
 #include <iostream>
