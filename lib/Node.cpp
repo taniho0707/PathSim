@@ -8,18 +8,26 @@ Node::Node(uint16_t n){
 
 Node::~Node(){}
 
-std::vector<Node *> getConnectedNodes(){
+std::vector<Node *> Node::getConnectedNodes(){
 	
 }
 
-bool isConnectedNode(Node&){
+bool Node::isConnectedNode(Node&){
 	
 }
 
-uint16_t getCost(Node *){
+uint16_t Node::getCost(Node *){
 	
 }
 
-uint16_t getNumber(){
+uint16_t Node::getNumber(){
+	
+}
+
+bool Node::connectTo(Node&){
+	
+}
+
+bool Node::disconnectTo(Node&){
 	
 }

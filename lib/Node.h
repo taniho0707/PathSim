@@ -25,6 +25,9 @@ public:
 	bool isConnectedNode(Node&);
 	uint16_t getCost(Node *);
 	uint16_t getNumber();
+
+	bool connectTo(Node&);
+	bool disconnectTo(Node&);
 	
 	~Node();
 };
