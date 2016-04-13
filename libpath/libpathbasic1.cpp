@@ -4,6 +4,6 @@
 #include "libpath.h"
 
 
-extern "C" int getPath(){
+extern "C" int getPath(Pathdata& p, const Map& m){
 	return 100;
 }

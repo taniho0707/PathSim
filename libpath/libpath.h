@@ -8,5 +8,5 @@
 #include "Pathdata.h"
 #include "Map.h"
 
-extern "C" int getPath();
+extern "C" int getPath(Pathdata& p, const Map& m);
 
