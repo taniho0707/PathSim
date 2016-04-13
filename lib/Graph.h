@@ -17,7 +17,7 @@ enum class WallAngle : uint8_t {
 	EAST,
 	SOUTH,
 	WEST,
-}
+};
 
 class Graph{
 private:
