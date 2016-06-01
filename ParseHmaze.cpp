@@ -33,6 +33,7 @@ int ParseHmaze::loadHmap(const QString& str){
 			testcase = ",";
 		}
 	}
+	return 0;
 }
 
 bool ParseHmaze::isExistWall(int x, int y, EMouseAngle angle){
