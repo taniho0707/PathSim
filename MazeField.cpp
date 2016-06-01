@@ -55,6 +55,7 @@ void MazeField::loadMazeFromClpbrd(){
 	if(str.indexOf(testcase) != 0){
 		ParseHmaze ps = ParseHmaze();
 		int ret = ps.getMap(str, m_map);
+		if(ret) std::cout << "Load Error" << std::endl;
 	}
 	MazeField::update();
 }
