@@ -1,5 +1,5 @@
 /**
- * @file libpath.h
+ * @file libpathbasic.h
  * @brief 最短パス生成のテンプレートクラス
  */
 
@@ -15,9 +15,9 @@ class Path{
 private:
 	
 public:
-	int getPath(Pathdata& path, const Map& map, const std::pair<uint32_t, uint32_t>& pair){};
+	int getPath(Pathdata& path, const Map& map, const std::pair<uint32_t, uint32_t>& pair);
 
-	~Path(){};
+	~Path();
 };
 
 typedef Path* create_p();
