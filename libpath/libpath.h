@@ -15,11 +15,9 @@ class Path{
 private:
 	
 public:
-	Path();
-	
-	virtual int getPath(Pathdata& path, const Map& map, const std::pair<uint32_t, uint32_t>& pair);
+	virtual int getPath(Pathdata& path, const Map& map, const std::pair<uint32_t, uint32_t>& pair) = 0;
 
-	virtual ~Path();
+	virtual ~Path() = 0;
 };
 
-typedef Path* create_p();
+typedef unique_ptr<Path> create_p();
