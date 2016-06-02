@@ -20,4 +20,4 @@ public:
 	virtual ~Path() = 0;
 };
 
-typedef unique_ptr<Path> create_p();
+typedef std::unique_ptr<Path> create_p();

@@ -1,8 +1,9 @@
 /**
  * @file libpathbasic1.cpp
  */
-#include "libpath.h"
+#include "libpath.hpp"
 
+using namespace std;
 
 class MyPath : public Path{
 private:

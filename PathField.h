@@ -20,7 +20,7 @@
 
 #include "Map.h"
 #include "Pathdata.h"
-#include "libpath/libpath.h"
+#include "libpath/libpath.hpp"
 
 class PathField : public QQuickPaintedItem{
 	Q_OBJECT
