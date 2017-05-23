@@ -1,164 +1,175 @@
 /**
  * @file Map.cpp
  */
-
 #include "Map.h"
 
+using namespace slalomparams;
 
 Map::Map(){
-	resetMap();
-	resetReachedMap();
-	addSingleWall(0, 0, E_AngleRight);
-}
-
-Map::~Map(){
-}
-
-void Map::resetMap(){
-	for (int i = 0; i < 31; i++) {
-		column[i] = 0;
-		row[i] = 0;
-	}
-}
-
-void Map::resetReachedMap(){
-	for (int i = 0; i < 32; i++) {
-		reached[i] = 0;
-	}
-}
-
-void Map::addWall(int x, int y, EMouseAngle angle, Walldata wall){
-	Walldata tmp = rotateWallToAbsolute(wall, angle);
-	if(tmp.existWall(E_DirFront)) addSingleWall(x, y, E_AngleUp);
-	if(tmp.existWall(E_DirRight)) addSingleWall(x, y, E_AngleRight);
-	if(tmp.existWall(E_DirBack)) addSingleWall(x, y, E_AngleDown);
-	if(tmp.existWall(E_DirLeft)) addSingleWall(x, y, E_AngleLeft);
-	return;
-}
-
-void Map::setWall(int x, int y, EMouseAngle angle, Walldata wall){
-	Walldata tmp = rotateWallToAbsolute(wall, angle);
-	setSingleWall(x, y, E_AngleUp, tmp.existWall(E_DirFront));
-	setSingleWall(x, y, E_AngleRight, tmp.existWall(E_DirRight));
-	setSingleWall(x, y, E_AngleDown, tmp.existWall(E_DirBack));
-	setSingleWall(x, y, E_AngleLeft, tmp.existWall(E_DirLeft));
-	return;
-}
-
-void Map::addSingleWall(int x, int y, EMouseAngle angle){
-	if(isPeripheryWall(x, y, angle)) return;
-	if(angle == E_AngleUp){
-		row[y] |= (1 << x);
-	} else if(angle == E_AngleRight){
-		column[x] |= (1 << y);
-	} else if(angle == E_AngleDown){
-		addSingleWall(x, y-1, E_AngleUp);
-	} else if(angle == E_AngleLeft){
-		addSingleWall(x-1, y, E_AngleRight);
-	}
-}
-
-void Map::setSingleWall(int x, int y, EMouseAngle angle, int wall){
-	// if((x == 0 && angle == E_AngleLeft)
-	// 		|| (x == 15 && angle == E_AngleRight)
-	// 		|| (y == 0 && angle == E_AngleDown)
-	// 		|| (y == 15 && angle == E_AngleUp)) return;
-	// int tmpx = (angle == 3) ? x-1 : x;
-	// int tmpy = (angle == 2) ? y-1 : y;
-	// if(angle % 2){
-	// 	row[tmpy] |= (32768 >> tmpx);
-	// } else {
-	// 	column[tmpy] |= (32768 >> tmpx);
+	format();
+	column[0] |= 2147483648;
+	// for(int i=0; i<16; ++i){
+	// 	addSingleWall(15, i, MazeAngle::EAST);
+	// 	addSingleWall(i, 15, MazeAngle::NORTH);
 	// }
 }
 
+void Map::format(){
+	formatWall();
+	formatReached();
+}
 
-int Map::isExistWall(int x, int y, EMouseAngle ang){
-	int ans = 0;
-	if(isPeripheryWall(x, y, ang)) return 1;
-	if(ang == E_AngleUp){
-		ans = row[y] & (1 << x);
-	} else if(ang == E_AngleRight) {
-		ans = column[x] & (1 << y);
-	} else if(ang == E_AngleDown){
-		ans = isExistWall(x, y-1, E_AngleUp);
-	} else if(ang == E_AngleLeft){
-		ans = isExistWall(x-1, y, E_AngleRight);
-	} else {
-		ans = 1;
+void Map::formatWall(){
+	for(auto &i : column){
+		i = 0;
 	}
-	if(ans) return 1;
-	else return 0;
+	for(auto &i : row){
+		i = 0;
+	}
 }
 
-bool Map::isPeripheryWall(int x, int y, int ang){
-	if((x == 0 && ang == E_AngleLeft)
-			|| (x == 31 && ang == E_AngleRight)
-			|| (y == 0 && ang == E_AngleDown)
-			|| (y == 31 && ang == E_AngleUp)) return true;
-	else return false;
+void Map::formatReached(){
+	for(auto &i : reached){
+		i = 0;
+	}
 }
 
-void Map::setReached(int x, int y){
-	if(x > 15 || x < 0 || y > 15 || y < 0) return;
-	reached[y] |= (32768 >> x);
+void Map::addWall(int8_t x, int8_t y, MazeAngle angle, Walldata wall){
+	Walldata tmp = Walldata::rotateWallToAbsolute(wall, angle);
+	if(tmp.isExistWall(MouseAngle::FRONT)) addSingleWall(x, y, MazeAngle::NORTH);
+	if(tmp.isExistWall(MouseAngle::LEFT)) addSingleWall(x, y, MazeAngle::WEST);
+	if(tmp.isExistWall(MouseAngle::RIGHT)) addSingleWall(x, y, MazeAngle::EAST);
+	if(tmp.isExistWall(MouseAngle::BACK)) addSingleWall(x, y, MazeAngle::SOUTH);
 	return;
 }
 
-int Map::hasReached(int x, int y){
-	if(reached[y] & (32768 >> x)) return 1;
-	else if(
-			(reached[y] & (32768 >> (x+1)))
-			&& (reached[y] & (32768 >> ((x==0)?(x+1):(x-1))))
-			&& (reached[(y==15)?(y-1):(y+1)] & (32768 >> x))
-			&& (reached[(y==0)?(y+1):(y-1)] & (32768 >> x))
-			) return 1;
-	else return 0;
+void Map::setWall(int8_t x, int8_t y, MazeAngle angle, Walldata wall){
+	Walldata tmp = Walldata::rotateWallToAbsolute(wall, angle);
+	setSingleWall(x, y, MazeAngle::NORTH, tmp.isExistWall(MouseAngle::FRONT));
+	setSingleWall(x, y, MazeAngle::EAST,  tmp.isExistWall(MouseAngle::RIGHT));
+	setSingleWall(x, y, MazeAngle::SOUTH, tmp.isExistWall(MouseAngle::BACK));
+	setSingleWall(x, y, MazeAngle::WEST,  tmp.isExistWall(MouseAngle::LEFT));
+	return;
 }
 
-Walldata Map::rotateWallToAbsolute(Walldata wall, EMouseAngle ang){
-	Walldata tmp;
-/*	char indata[4];
-	indata[0] = wall.existWall(E_DirFront);
-	indata[1] = wall.existWall(E_DirRight);
-	indata[2] = wall.existWall(E_DirBack);
-	indata[3] = wall.existWall(E_DirLeft);
-	if(indata[(4-ang)%4]) tmp.addWall(E_DirFront);
-	if(indata[(5-ang)%4]) tmp.addWall(E_DirRight);
-	if(indata[(6-ang)%4]) tmp.addWall(E_DirBack);
-	if(indata[(7-ang)%4]) tmp.addWall(E_DirLeft);
-*/
-	if(ang == E_AngleUp) return wall;
-	else if(ang == E_AngleRight){
-		if(wall.existWall(E_DirFront)) tmp.addWall(E_DirRight);
-		if(wall.existWall(E_DirRight)) tmp.addWall(E_DirBack);
-		if(wall.existWall(E_DirBack)) tmp.addWall(E_DirLeft);
-		if(wall.existWall(E_DirLeft)) tmp.addWall(E_DirFront);
-	} else if(ang == E_AngleDown){
-		if(wall.existWall(E_DirFront)) tmp.addWall(E_DirBack);
-		if(wall.existWall(E_DirRight)) tmp.addWall(E_DirLeft);
-		if(wall.existWall(E_DirBack)) tmp.addWall(E_DirFront);
-		if(wall.existWall(E_DirLeft)) tmp.addWall(E_DirRight);
-	} else {
-		if(wall.existWall(E_DirFront)) tmp.addWall(E_DirLeft);
-		if(wall.existWall(E_DirRight)) tmp.addWall(E_DirFront);
-		if(wall.existWall(E_DirBack)) tmp.addWall(E_DirRight);
-		if(wall.existWall(E_DirLeft)) tmp.addWall(E_DirBack);
+void Map::addSingleWall(int8_t x, int8_t y, MazeAngle angle){
+	if((x == 0 && angle == MazeAngle::WEST)
+			|| (x == 31 && angle == MazeAngle::EAST)
+			|| (y == 0 && angle == MazeAngle::SOUTH)
+			|| (y == 31 && angle == MazeAngle::NORTH)) return;
+	if(angle == MazeAngle::NORTH){
+		row[y] |= (0x80000000 >> x);
+	} else if(angle == MazeAngle::EAST){
+		column[x] |= (0x80000000 >> y);
+	} else if(angle == MazeAngle::SOUTH){
+		row[y-1] |= (0x80000000 >> x);
+	} else if(angle == MazeAngle::WEST){
+		column[x-1] |= (0x80000000 >> y);
 	}
-	return tmp;
 }
 
-Walldata Map::rotateWallToRelative(Walldata wall, EMouseAngle ang){
-	Walldata tmp;
-	char indata[4];
-	indata[0] = wall.existWall(E_DirFront);
-	indata[1] = wall.existWall(E_DirRight);
-	indata[2] = wall.existWall(E_DirBack);
-	indata[3] = wall.existWall(E_DirLeft);
-	if(indata[(ang)%4]) tmp.addWall(E_DirFront);
-	if(indata[(ang+1)%4]) tmp.addWall(E_DirRight);
-	if(indata[(ang+2)%4]) tmp.addWall(E_DirBack);
-	if(indata[(ang+3)%4]) tmp.addWall(E_DirLeft);
-	return tmp;
+void Map::setSingleWall(int8_t x, int8_t y, MazeAngle angle, bool wall){
+	if((x == 0 && angle == MazeAngle::WEST)
+	   || (x == 31 && angle == MazeAngle::EAST)
+	   || (y == 0 && angle == MazeAngle::SOUTH)
+	   || (y == 31 && angle == MazeAngle::NORTH)) return;
+	if(wall){
+		addSingleWall(x, y, angle);
+	} else {
+		if(angle == MazeAngle::NORTH){
+			row[y] &= ~(0x80000000 >> x);
+		} else if(angle == MazeAngle::EAST){
+			column[x] &= ~(0x80000000 >> y);
+		} else if(angle == MazeAngle::SOUTH){
+			row[y-1] &= ~(0x80000000 >> x);
+		} else if(angle == MazeAngle::WEST){
+			column[x-1] &= ~(0x80000000 >> y);
+		}
+	}
 }
 
+Walldata Map::getWalldata(int8_t x, int8_t y){
+	Walldata wall;
+	if(isExistWall(x, y, MazeAngle::NORTH)) wall.addWall(MouseAngle::FRONT);
+	if(isExistWall(x, y, MazeAngle::SOUTH)) wall.addWall(MouseAngle::BACK);
+	if(isExistWall(x, y, MazeAngle::EAST)) wall.addWall(MouseAngle::RIGHT);
+	if(isExistWall(x, y, MazeAngle::WEST)) wall.addWall(MouseAngle::LEFT);
+	return wall;
+}
+
+Walldata Map::getKnownWalldata(int8_t x, int8_t y){
+	Walldata wall;
+	if(isExistWall(x, y, MazeAngle::NORTH) || hasWatched(x, y, MazeAngle::NORTH)==false) wall.addWall(MouseAngle::FRONT);
+	if(isExistWall(x, y, MazeAngle::SOUTH) || hasWatched(x, y, MazeAngle::SOUTH)==false) wall.addWall(MouseAngle::BACK);
+	if(isExistWall(x, y, MazeAngle::EAST) || hasWatched(x, y, MazeAngle::EAST)==false) wall.addWall(MouseAngle::RIGHT);
+	if(isExistWall(x, y, MazeAngle::WEST) || hasWatched(x, y, MazeAngle::WEST)==false) wall.addWall(MouseAngle::LEFT);
+	return wall;
+}
+
+
+bool Map::isExistWall(int8_t x, int8_t y, MazeAngle angle){
+	uint32_t ans = 0;
+	if((x == 0 && angle == MazeAngle::WEST)
+			|| (x == 31 && angle == MazeAngle::EAST)
+			|| (y == 0 && angle == MazeAngle::SOUTH)
+			|| (y == 31 && angle == MazeAngle::NORTH)) return true;
+	if(x < 0 || x > 31 || y < 0 || y > 31) return true;
+	if(angle == MazeAngle::NORTH){
+		ans = row[y] & (0x80000000 >> x);
+	} else if(angle == MazeAngle::EAST) {
+		ans = column[x] & (0x80000000 >> y);
+	} else if(angle == MazeAngle::SOUTH){
+		ans = row[y-1] & (0x80000000 >> x);
+	} else if(angle == MazeAngle::WEST){
+		ans = column[x-1] & (0x80000000 >> y);
+	} else {
+		ans = 1;
+	}
+	if(ans > 0) return true;
+	else return false;
+}
+
+void Map::setReached(int8_t x, int8_t y){
+	if(x > 31 || x < 0 || y > 31 || y < 0) return;
+	reached[y] |= (0x80000000 >> x);
+	return;
+}
+
+bool Map::hasReached(int8_t x, int8_t y){
+	if(x < 0 || x > 31 || y < 0 || y > 31) return false;
+	if(reached[y] & (0x80000000 >> x)) return true;
+	// else if(
+	// 	(reached[y] & (0x80000000 >> (x+1)))
+	// 	|| (x==0 ? false : (reached[y] & (0x80000000 >> (x-1))))
+	// 	|| (y==31 ? false : (reached[y+1] & (0x80000000 >> x)))
+	// 	|| (y==0 ? false : (reached[y-1] & (0x80000000 >> x)))
+	// 	) return true;
+	else return false;
+}
+
+bool Map::hasWatched(int8_t x, int8_t y, MazeAngle angle){
+	switch(angle){
+	case MazeAngle::NORTH:
+		return (hasReached(x, y) | hasReached(x, y+1));
+		break;
+	case MazeAngle::EAST:
+		return (hasReached(x, y) | hasReached(x+1, y));
+		break;
+	case MazeAngle::SOUTH:
+		return (hasReached(x, y) | hasReached(x, y-1));
+		break;
+	case MazeAngle::WEST:
+		return (hasReached(x, y) | hasReached(x-1, y));
+		break;
+	}
+}
+
+void Map::copyFrom(Map& m){
+	for(int i=0; i<31; i++){
+		column[i] = m.column[i];
+		row[i] = m.row[i];
+	}
+	for(int i=0; i<32; i++){
+		reached[i] = m.reached[i];
+	}
+}

@@ -36,19 +36,19 @@ int ParseHmaze::loadHmap(const QString& str){
 	return 0;
 }
 
-bool ParseHmaze::isExistWall(int x, int y, EMouseAngle angle){
-	if(angle == E_AngleUp && ((m_hmap[x][y])&0x1)) return true;
-	if(angle == E_AngleRight && ((m_hmap[x][y] >> 1)&0x1)) return true;
-	if(angle == E_AngleDown && ((m_hmap[x][y] >> 2)&0x1)) return true;
-	if(angle == E_AngleLeft && ((m_hmap[x][y] >> 3)&0x1)) return true;
+bool ParseHmaze::isExistWall(int x, int y, MazeAngle angle){
+	if(angle == MazeAngle::NORTH && ((m_hmap[x][y])&0x1)) return true;
+	if(angle == MazeAngle::EAST && ((m_hmap[x][y] >> 1)&0x1)) return true;
+	if(angle == MazeAngle::SOUTH && ((m_hmap[x][y] >> 2)&0x1)) return true;
+	if(angle == MazeAngle::WEST && ((m_hmap[x][y] >> 3)&0x1)) return true;
 	return false;
 }
 
 int ParseHmaze::convToMap(){
 	for (int i=0; i<16; i++) {
 		for (int j=0; j<16; j++) {
-			if(isExistWall(i, j, E_AngleUp)) m_map.addSingleWall(i, j, E_AngleUp);
-			if(isExistWall(i, j, E_AngleRight)) m_map.addSingleWall(i, j, E_AngleRight);
+			if(isExistWall(i, j, MazeAngle::NORTH)) m_map.addSingleWall(i, j, MazeAngle::NORTH);
+			if(isExistWall(i, j, MazeAngle::EAST)) m_map.addSingleWall(i, j, MazeAngle::EAST);
 		}
 	}
 	return 0;

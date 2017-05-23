@@ -7,3 +7,5 @@ moc_*
 Makefile
 *.so
 !libpath/Makefile
+.qmake.stash
+main.qmlc

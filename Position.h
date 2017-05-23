@@ -1,44 +1,46 @@
-#ifndef INCLUDED_POSITION_H_
-#define INCLUDED_POSITION_H_
-/**
+/*
  * @file Position.h
  */
 
-#include <utility>
+#pragma once
 
-#include "const.h"
-#include "Map.h"
+#include "SlalomParams.h"
 
-
-/**
- * @brief マウスの現在座標と向きを管理するクラスです。
- */
-class Position{
-private:
-
-
-
-public:
-
-	unsigned char x;
-	unsigned char y;
-
-	EMouseAngle angle;
-
-	Position();
-
-	void setPosition(std::pair<char, char>, EMouseAngle);
-	void setNextAngle(EMotion);
-	std::pair<char, char> getCoordinate();
-	EMouseAngle getAngle();
-	EMouseAngle getReverseAngle(EMouseAngle);
-	void moveStraight();
-	void moveRight();
-	void moveLeft();
-	void moveTurn();
-
-	char isInGoal();
-
+enum class MazeAngle : uint8_t{
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST,
 };
 
-#endif
+enum class MouseAngle : uint8_t{
+	FRONT,
+	RIGHT,
+	BACK,
+	LEFT,
+};
+
+class Position{
+private:
+	int16_t cur_x;
+	int16_t cur_y;
+
+	MazeAngle cur_angle;
+
+public:
+	void setPosition(int8_t x, int8_t y);
+	void setPosition(int8_t x, int8_t y, MazeAngle angle);
+	void setAngle(MazeAngle angle);
+
+	void setNextPosition(slalomparams::RunType type);
+
+	int16_t getPositionX();
+	int16_t getPositionY();
+	std::pair<int16_t, int16_t> getPosition();
+
+	MazeAngle getAngle();
+
+	Position();
+	~Position();
+};
+

@@ -2,8 +2,7 @@
  * SimManage.h
  */
 
-#ifndef INCLUDED_SIMMANAGE_H
-#define INCLUDED_SIMMANAGE_H
+#pragma once
 
 #include <iostream>
 #include <sys/types.h>
@@ -38,5 +37,3 @@ private:
 	Map m_map;
 
 };
-
-#endif

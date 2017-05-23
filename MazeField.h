@@ -38,6 +38,12 @@ public:
 	void loadMazeFromFile();
 	void loadMazeFromNFC(const int& m);
 
+	/* /// @todo */
+	/* void setClass(ClassType); */
+	/* void drawWalls(Map); */
+	/* void plotDot(int, int); */
+	/* void plotMetric(int, int); */
+
     void paint(QPainter *painter);
 
 private:

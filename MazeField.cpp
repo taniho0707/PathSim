@@ -21,7 +21,7 @@ void MazeField::paint(QPainter *painter){
 		for(int j=0; j<32; ++j){
 			rect.moveTo(32*i-3, 32*j+3);
 			if(i == 0 || i == 32
-			   || m_map.isExistWall(i-1, 31-j, E_AngleRight) )
+			   || m_map.isExistWall(i-1, 31-j, MazeAngle::EAST) )
 				painter->fillRect(rect, brush);
 		}
 	}
@@ -30,7 +30,7 @@ void MazeField::paint(QPainter *painter){
 		for(int i=0; i<32; ++i){
 			rect.moveTo(32*i+3, 32*j-3);
 			if(j == 0 || j == 32
-			   || m_map.isExistWall(i, 31-j, E_AngleUp) )
+			   || m_map.isExistWall(i, 31-j, MazeAngle::NORTH) )
 				painter->fillRect(rect, brush);
 		}
 	}

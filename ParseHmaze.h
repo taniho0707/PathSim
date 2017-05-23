@@ -2,8 +2,7 @@
  * ParseHmaze.h
  */
 
-#ifndef INCLUDED_PARSE_HMAZE_H
-#define INCLUDED_PARSE_HMAZE_H
+#pragma once
 
 #include <QString>
 #include "Map.h"
@@ -21,7 +20,7 @@ public:
 	
 	int loadHmap(const QString& str);
 
-	bool isExistWall(int x, int y, EMouseAngle angle);
+	bool isExistWall(int x, int y, MazeAngle angle);
 	
 	int convToMap();
 	
@@ -29,4 +28,3 @@ public:
 
 };
 
-#endif

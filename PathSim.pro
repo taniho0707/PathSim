@@ -14,6 +14,6 @@ QMAKE_CXXFLAGS += -std=c++11
 QT += qml quick widgets network gui
 
 # Input
-HEADERS += Algorithm.h const.h Map.h Mouse.h Position.h SimManage.h MazeField.h ParseHmaze.h PathField.h lib/Graph.h
+HEADERS += const.h Map.h SimManage.h MazeField.h ParseHmaze.h PathField.h SlalomParams.h
 #Walldata.h
-SOURCES += main.cpp Map.cpp Position.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp lib/Walldata.cpp lib/Pathdata.cpp lib/Footmap.cpp PathField.cpp lib/Node.cpp lib/Graph.cpp
+SOURCES += main.cpp Map.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp lib/Walldata.cpp lib/Pathdata.cpp lib/Footmap.cpp PathField.cpp

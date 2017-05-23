@@ -4,54 +4,78 @@
 #include "Walldata.h"
 
 Walldata::Walldata(){
-	data = 0;
-}
-
-void Walldata::operator= (char input){
-	data = input;
+	data.reset();
 }
 
 void Walldata::operator= (Walldata input){
 	data = input.data;
 }
 
-void Walldata::operator+= (char input){
-	data |= input;
+void Walldata::operator+= (Walldata input){
+	data |= input.data;
 }
 
-void Walldata::operator|= (char input){
-	data |= input;
+void Walldata::operator|= (Walldata input){
+	data |= input.data;
 }
 
-char Walldata::getRawData(){
+std::bitset<4> Walldata::getRawData(){
 	return data;
 }
 
-int Walldata::existWall(EMouseDirection dir){
-	if((data>>dir)&1) return 1;
-	else return 0;
+bool Walldata::isExistWall(MouseAngle dir){
+	return data.test(static_cast<uint8_t>(dir));
 }
 
-void Walldata::addWall(EMouseDirection dir){
-	if(dir == E_DirFront)
-		data |= 0x01;
-	else if(dir == E_DirLeft)
-		data |= 0x02;
-	else if(dir == E_DirRight)
-		data |= 0x04;
-	else if(dir == E_DirBack)
-		data |= 0x08;
-	return;
+void Walldata::addWall(MouseAngle dir){
+	data.set(static_cast<uint8_t>(dir));
 }
 
-void Walldata::removeWall(EMouseDirection angle){
-	char tmp = 1;
-	tmp = tmp << angle;
-	tmp = ~tmp;
-	data &= tmp;
-	return;
+void Walldata::removeWall(MouseAngle dir){
+	data.reset(static_cast<uint8_t>(dir));
 }
 
-Walldata::~Walldata(){
-	
+Walldata Walldata::rotateWallToAbsolute(Walldata wall, MazeAngle angle){
+	Walldata ret;
+	if(angle == MazeAngle::NORTH) return wall;
+	else if(angle == MazeAngle::EAST){
+		if(wall.isExistWall(MouseAngle::FRONT)) ret.addWall(MouseAngle::RIGHT);
+		if(wall.isExistWall(MouseAngle::RIGHT)) ret.addWall(MouseAngle::BACK);
+		if(wall.isExistWall(MouseAngle::BACK)) ret.addWall(MouseAngle::LEFT);
+		if(wall.isExistWall(MouseAngle::LEFT)) ret.addWall(MouseAngle::FRONT);
+	} else if(angle == MazeAngle::SOUTH){
+		if(wall.isExistWall(MouseAngle::FRONT)) ret.addWall(MouseAngle::BACK);
+		if(wall.isExistWall(MouseAngle::RIGHT)) ret.addWall(MouseAngle::LEFT);
+		if(wall.isExistWall(MouseAngle::BACK)) ret.addWall(MouseAngle::FRONT);
+		if(wall.isExistWall(MouseAngle::LEFT)) ret.addWall(MouseAngle::RIGHT);
+	} else {
+		if(wall.isExistWall(MouseAngle::FRONT)) ret.addWall(MouseAngle::LEFT);
+		if(wall.isExistWall(MouseAngle::RIGHT)) ret.addWall(MouseAngle::FRONT);
+		if(wall.isExistWall(MouseAngle::BACK)) ret.addWall(MouseAngle::RIGHT);
+		if(wall.isExistWall(MouseAngle::LEFT)) ret.addWall(MouseAngle::BACK);
+	}
+	return ret;
 }
+
+Walldata Walldata::rotateWallToRelative(Walldata wall, MazeAngle angle){
+	Walldata ret;
+	if(angle == MazeAngle::NORTH) return wall;
+	else if(angle == MazeAngle::EAST){
+		if(wall.isExistWall(MouseAngle::FRONT)) ret.addWall(MouseAngle::RIGHT);
+		if(wall.isExistWall(MouseAngle::RIGHT)) ret.addWall(MouseAngle::BACK);
+		if(wall.isExistWall(MouseAngle::BACK)) ret.addWall(MouseAngle::LEFT);
+		if(wall.isExistWall(MouseAngle::LEFT)) ret.addWall(MouseAngle::FRONT);
+	} else if(angle == MazeAngle::SOUTH){
+		if(wall.isExistWall(MouseAngle::FRONT)) ret.addWall(MouseAngle::BACK);
+		if(wall.isExistWall(MouseAngle::RIGHT)) ret.addWall(MouseAngle::LEFT);
+		if(wall.isExistWall(MouseAngle::BACK)) ret.addWall(MouseAngle::FRONT);
+		if(wall.isExistWall(MouseAngle::LEFT)) ret.addWall(MouseAngle::RIGHT);
+	} else {
+		if(wall.isExistWall(MouseAngle::FRONT)) ret.addWall(MouseAngle::LEFT);
+		if(wall.isExistWall(MouseAngle::RIGHT)) ret.addWall(MouseAngle::FRONT);
+		if(wall.isExistWall(MouseAngle::BACK)) ret.addWall(MouseAngle::RIGHT);
+		if(wall.isExistWall(MouseAngle::LEFT)) ret.addWall(MouseAngle::BACK);
+	}
+	return ret;
+}
+

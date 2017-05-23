@@ -1,48 +1,41 @@
-/**
+/*
  * @file Map.h
- * 迷路データを扱うためのクラスや，それに付随したいくつかのクラスを用意しています。<br>
- * 二次元，三次元ベクトルや壁データのクラスがあります。
  */
-#ifndef INCLUDED_MAP_H
-#define INCLUDED_MAP_H
+#pragma once
 
-#include "const.h"
-
+#include "SlalomParams.h"
 #include "Walldata.h"
 
-
-/**
- * 迷路データを管理するクラス
- */
 class Map{
 private:
-	bool isPeripheryWall(int x, int y, int angle);
-
+	
+	
 public:
 	Map();
 
 	/**
-	 * @brief 一番上の壁がMSB，一番下の壁がLSB，左から順
+	 * @brief 一番左の壁がMSB，右から2番目の壁がLSB，下から順
 	 */
-	unsigned long column[31];
+	uint32_t column[31];
 	/**
-	 * @brief 一番右の壁がMSB，一番左の壁がLSB，下から順
+	 * @brief 一番左の壁がMSB，右から2番目の壁がLSB，下から順
 	 */
-	unsigned long row[31];
+	uint32_t row[31];
 	/**
-	 * @brief 一番右のマスがMSB，一番左のマスがLSB，下から順
+	 * @brief 一番左のマスがMSB，一番右のマスがLSB，下から順
 	 */
-	unsigned long reached[32];
+	uint32_t reached[32];
 
 
+	void format();
 	/**
 	 * @brief 迷路データを初期化する
 	 */
-	void resetMap();
+	void formatWall();
 	/**
 	 * @brief 到達マップを初期化する
 	 */
-	void resetReachedMap();
+	void formatReached();
 
 
 	/**
@@ -52,7 +45,7 @@ public:
 	 * @param angle 今自分が向いている絶対方向
 	 * @param wall 今見えている壁情報
 	 */
-	void addWall(int x, int y, EMouseAngle angle, Walldata wall);
+	void addWall(int8_t x, int8_t y, MazeAngle angle, Walldata wall);
 
 	/**
 	 * @brief 壁を設定します
@@ -61,7 +54,7 @@ public:
 	 * @param angle 今自分が向いている絶対方向
 	 * @param wall 今見えている壁情報
 	 */
-	void setWall(int x, int y, EMouseAngle angle, Walldata wall);
+	void setWall(int8_t x, int8_t y, MazeAngle angle, Walldata wall);
 
 	/**
 	 * @brief 壁を追加します。絶対方向でのみ指定が可能です。
@@ -69,7 +62,7 @@ public:
 	 * @param y 壁を追加する区画のy座標
 	 * @param angle 今自分が向いている絶対方向
 	 */
-	void addSingleWall(int x, int y, EMouseAngle angle);
+	void addSingleWall(int8_t x, int8_t y, MazeAngle angle);
 
 	/**
 	 * @brief 壁を設定します。絶対方向でのみ指定が可能です。
@@ -79,17 +72,20 @@ public:
 	 * @param wall 今見えている壁情報
 	 * @bug まだaddSingleWallと同じ関数
 	 */
-	void setSingleWall(int x, int y, EMouseAngle angle, int wall);
+	void setSingleWall(int8_t x, int8_t y, MazeAngle angle, bool wall);
+
+	Walldata getWalldata(int8_t x, int8_t y);
+	Walldata getKnownWalldata(int8_t x, int8_t y);
 
 
 	/**
 	 * @brief 絶対方向から見て壁があるか確認します
 	 * @param x 壁を追加する区画のx座標
 	 * @param y 壁を追加する区画のy座標
-	 * @param ang 今自分が見ている絶対方向
-	 * @return 壁が存在したら1，なかったら0をintで返します
+	 * @param angle 今自分が見ている絶対方向
+	 * @return 壁が存在したらtrue
 	 */
-	int isExistWall(int x, int y, EMouseAngle ang);
+	bool isExistWall(int8_t x, int8_t y, MazeAngle angle);
 
 
 	/**
@@ -97,7 +93,7 @@ public:
 	 * @param x 到達設定する区画のx座標
 	 * @param y 到達設定する区画のy座標
 	 */
-	void setReached(int, int);
+	void setReached(int8_t, int8_t);
 
 	/**
 	 * @brief 到達したか確認します
@@ -105,40 +101,25 @@ public:
 	 * @param y 到達確認する区画のy座標
 	 * @return 到達していたら1，していなかったら0を返します
 	 */
-	int hasReached(int, int);
+	bool hasReached(int8_t, int8_t);
 
+	bool hasWatched(int8_t, int8_t, MazeAngle);
 
-	/**
-	 * @brief マウスから見たWalldataを絶対方向に変換します
-	 * @param wall 変換元の壁情報
-	 * @param ang マウスの向いている方向
-	 * @return 変換後のWalldataを返します
-	 */
-	Walldata rotateWallToAbsolute(Walldata wall, EMouseAngle ang);
-
-	/**
-	 * @brief 絶対方向のWalldataをマウスから見た方向に変換します
-	 * @param wall 変換元の壁情報
-	 * @param ang 変換したい方向
-	 * @return 変換後のWalldataを返します
-	 */
-	Walldata rotateWallToRelative(Walldata wall, EMouseAngle ang);
+	void copyFrom(Map&);
 
 
 	/**
 	 * @brief =演算子のオーバーロード。Mapクラスを代入します
 	 * @bug できない
 	 */
-	/* Map& operator= (Map *tmp){ */
-	/* 	/\* column = tmp->column; *\/ */
-	/* 	/\* row = tmp->row; *\/ */
-	/* 	/\* reached = tmp->reached; *\/ */
-	/* 	/\* return *this; *\/ */
+	/* Map& operator= (Map tmp){ */
+	/* 	for(int i=0; i<31; i++){ */
+	/* 		column[i] = tmp.column[i]; */
+	/* 		row[i] = tmp.row[i]; */
+	/* 	} */
+	/* 	for(int i=0; i<32; i++){ */
+	/* 		reached[i] = tmp.reached[i]; */
+	/* 	} */
+	/* 	return *this; */
 	/* } */
-
-
-	~Map();
 };
-
-
-#endif

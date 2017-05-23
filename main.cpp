@@ -8,11 +8,7 @@
 #include "MazeField.h"
 #include "PathField.h"
 
-// #include "const.h"
-// #include "Map.h"
-// #include "Algorithm.h"
-
-// using namespace std;
+using namespace std;
 
 
 int main(int argc, char **argv){
