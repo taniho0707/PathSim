@@ -41,7 +41,7 @@ public:
 	/* /// @todo */
 	/* void setClass(ClassType); */
 	/* void drawWalls(Map); */
-	/* void plotDot(int, int); */
+	/* void plotDot(int x, int y); */
 	/* void plotMetric(int, int); */
 
     void paint(QPainter *painter);
@@ -53,5 +53,3 @@ private:
 
 
 };
-
-#endif
