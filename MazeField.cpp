@@ -16,19 +16,25 @@ void MazeField::paint(QPainter *painter){
 	painter->setPen(pen);
 	painter->setRenderHints(QPainter::Antialiasing, true);
 	painter->fillRect(rect, QColor("dimgray"));
-	rect.setSize(QSize(6, 26));
+	for (int i=0; i<32; ++i) {
+		painter->drawStaticText(10, i*30+40, QStaticText(QString::number(31-i)));
+		painter->drawStaticText(990+5, i*30+40, QStaticText(QString::number(31-i)));
+		painter->drawStaticText(i*30+40, 10, QStaticText(QString::number(i)));
+		painter->drawStaticText(i*30+40, 990+5, QStaticText(QString::number(i)));
+	}
+	rect.setSize(QSize(2, 28));
 	for(int i=0; i<33; ++i){
 		for(int j=0; j<32; ++j){
-			rect.moveTo(32*i-3, 32*j+3);
+			rect.moveTo(30*i-1+30, 30*j+1+30);
 			if(i == 0 || i == 32
 			   || m_map.isExistWall(i-1, 31-j, MazeAngle::EAST) )
 				painter->fillRect(rect, brush);
 		}
 	}
-	rect.setSize(QSize(26, 6));
+	rect.setSize(QSize(28, 2));
 	for(int j=0; j<33; ++j){
 		for(int i=0; i<32; ++i){
-			rect.moveTo(32*i+3, 32*j-3);
+			rect.moveTo(30*i+1+30, 30*j-1+30);
 			if(j == 0 || j == 32
 			   || m_map.isExistWall(i, 31-j, MazeAngle::NORTH) )
 				painter->fillRect(rect, brush);

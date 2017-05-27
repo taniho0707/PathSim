@@ -62,9 +62,9 @@ void PathField::setClass(ClassType type){
 
 void PathField::plotDot(QPainter *painter, int x, int y, int d){
 	if (d == 1){
-		painter->drawPoint(x-(d-1)/2, y-(d-1)/2);
+		painter->drawPoint(x-(d-1)/2+30, 1020-(y-(d-1)/2)-30);
 	} else {
-		painter->drawEllipse(x-(d-1)/2, y-(d-1)/2, d, d);
+		painter->drawEllipse(x-(d-1)/2+30, 1020-(y-(d-1)/2)-30, d, d);
 	}
 }
 
@@ -77,6 +77,6 @@ void PathField::paint(QPainter *painter){
 	QPen pen(QColor("palegreen"), 2);
 	painter->setPen(pen);
 	painter->setRenderHints(QPainter::Antialiasing, true);
-	plotDot(painter, 400, 400);
+	plotDot(painter, 30, 30);
 }
 

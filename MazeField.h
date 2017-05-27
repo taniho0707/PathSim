@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QRect>
 #include <QClipboard>
+#include <QStaticText>
 
 #include <iostream>
 
