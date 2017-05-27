@@ -51,8 +51,8 @@ private:
 	int size_trout;
 	int size_trout_metric;
 
-	const int size_x = 1024;
-	const int size_y = 1024;
+	const int size_x = 1020;
+	const int size_y = 1020;
 
 	void* loadLibOrDie(const std::string& path);
 	void* loadFuncOrDie(void* lib, const std::string& func_name);

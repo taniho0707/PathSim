@@ -6,7 +6,7 @@
 using namespace std;
 
 PathField::PathField(QQuickItem *parent) : QQuickPaintedItem(parent){
-	
+	setClass(ClassType::HALF);
 }
 
 void* PathField::loadFuncOrDie(void *lib, const string& func_name) {
@@ -69,7 +69,7 @@ void PathField::plotDot(QPainter *painter, int x, int y, int d){
 }
 
 void PathField::plotMetric(QPainter *painter, float x, float y, int d){
-	plotDot(painter, static_cast<float>(size_x*size_trout/size_trout_metric), static_cast<float>(size_y*size_trout/size_trout_metric), d);
+	plotDot(painter, static_cast<int>((x-1)*static_cast<float>(size_x/size_trout)/(size_trout_metric)), static_cast<int>(y*static_cast<float>(size_y/size_trout)/(size_trout_metric)), d);
 }
 
 
@@ -77,6 +77,6 @@ void PathField::paint(QPainter *painter){
 	QPen pen(QColor("palegreen"), 2);
 	painter->setPen(pen);
 	painter->setRenderHints(QPainter::Antialiasing, true);
-	plotDot(painter, 30, 30);
+	plotMetric(painter, 90, 90);
 }
 
