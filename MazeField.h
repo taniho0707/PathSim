@@ -2,8 +2,7 @@
  * MazeField.h
  */
 
-#ifndef INCLUDED_MAZEFIELD_H
-#define INCLUDED_MAZEFIELD_H
+#pragma once
 
 #include <QQuickPaintedItem>
 #include <QApplication>

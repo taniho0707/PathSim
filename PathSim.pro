@@ -5,15 +5,14 @@
 TEMPLATE = app
 # TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += .
-INCLUDEPATH += lib graph
-LIBS += -ldl
-CONFIG += c++11
+INCLUDEPATH += . libmouse libpath
+LIBS += -Llibmouse
+LIBS += libmouse/libmouse_x86.so -ldl
+CONFIG += c++14
 QMAKE_LFLAGS += -Wl,-E
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++14
 QT += qml quick widgets network gui
 
 # Input
-HEADERS += const.h Map.h SimManage.h MazeField.h ParseHmaze.h PathField.h SlalomParams.h
-#Walldata.h
-SOURCES += main.cpp Map.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp lib/Walldata.cpp lib/Pathdata.cpp lib/Footmap.cpp PathField.cpp
+HEADERS += SimManage.h MazeField.h ParseHmaze.h PathField.h
+SOURCES += main.cpp SimManage.cpp MazeField.cpp ParseHmaze.cpp PathField.cpp
