@@ -43,10 +43,40 @@ void PathField::loadPath(QString lib){
 	
 	dlclose(loadlib);
 	// PathData m_path;
-	
 }
 
+
+void PathField::setClass(ClassType type){
+	field_type = type;
+	if (field_type == ClassType::CLASSIC) {
+		size_trout = 16;
+		size_trout_metric = 180;
+	} else if (field_type == ClassType::HALF) {
+		size_trout = 32;
+		size_trout_metric = 90;
+	} else if (field_type == ClassType::QUARTER) {
+		size_trout = 32;
+		size_trout_metric = 45;
+	}
+}
+
+void PathField::plotDot(QPainter *painter, int x, int y, int d){
+	if (d == 1){
+		painter->drawPoint(x-(d-1)/2, y-(d-1)/2);
+	} else {
+		painter->drawEllipse(x-(d-1)/2, y-(d-1)/2, d, d);
+	}
+}
+
+void PathField::plotMetric(QPainter *painter, float x, float y, int d){
+	plotDot(painter, static_cast<float>(size_x*size_trout/size_trout_metric), static_cast<float>(size_y*size_trout/size_trout_metric), d);
+}
+
+
 void PathField::paint(QPainter *painter){
-	
+	QPen pen(QColor("palegreen"), 2);
+	painter->setPen(pen);
+	painter->setRenderHints(QPainter::Antialiasing, true);
+	plotDot(painter, 400, 400);
 }
 

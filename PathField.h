@@ -20,7 +20,13 @@
 
 #include "Map.h"
 #include "Pathdata.h"
-#include "libpath/libpath.hpp"
+#include "libpath.hpp"
+
+enum class ClassType : uint8_t {
+	CLASSIC,
+	HALF,
+	QUARTER,
+};
 
 class PathField : public QQuickPaintedItem{
 	Q_OBJECT
@@ -32,10 +38,21 @@ public:
 
 	Q_INVOKABLE void loadPath(QString lib);
 
+	void setClass(ClassType type);
+	void plotDot(QPainter *painter, int x, int y, int d = 1);
+	void plotMetric(QPainter *painter, float x, float y, int d = 1);
+
 	void paint(QPainter *painter);
 
 private:
 	Pathdata m_path;
+
+	ClassType field_type;
+	int size_trout;
+	int size_trout_metric;
+
+	const int size_x = 1024;
+	const int size_y = 1024;
 
 	void* loadLibOrDie(const std::string& path);
 	void* loadFuncOrDie(void* lib, const std::string& func_name);
