@@ -46,6 +46,7 @@ void MazeField::setSize(const int &mazesize){
 	MazeField::m_size = mazesize;
 }
 
+
 void MazeField::loadMaze(const int& m){
 	if(m == 1000) MazeField::loadMazeFromClpbrd();
 	else if(m == 2000) MazeField::loadMazeFromFile();
@@ -62,6 +63,11 @@ void MazeField::loadMazeFromClpbrd(){
 		ParseHmaze ps = ParseHmaze();
 		int ret = ps.getMap(str, m_map);
 		if(ret) std::cout << "Load Error" << std::endl;
+	}
+	for (int i=0; i<32; ++i) {
+		for (int j=0; j<32; ++j) {
+			m_map.setReached(i, j);
+		}
 	}
 	MazeField::update();
 }

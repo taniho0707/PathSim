@@ -55,7 +55,10 @@ ApplicationWindow{
             x:30; y:40
             width: 120
             text: "Clipboard"
-            onClicked: mazefield.loadMazeFromClpbrd()
+            onClicked: {
+                mazefield.loadMazeFromClpbrd();
+                pathfield.updateMapFromClpbrd();
+            }
         }
         Button {
             id: button_file
@@ -114,7 +117,9 @@ ApplicationWindow{
             x:30; y:40
             width: 120
             text: "DrawPath"
-            onClicked: pathfield.loadPath(combo_algorithm.currentText);
+            onClicked: {
+                pathfield.loadPath(combo_algorithm.currentText);
+            }
         }
     }
 }

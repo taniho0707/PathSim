@@ -32,6 +32,7 @@ public:
 
     int getSize() const { return m_size; }
     void setSize(const int &mazesize);
+	Q_INVOKABLE Map getMap() const { return m_map; }
 
 	void loadMaze(const int& m);
 	Q_INVOKABLE void loadMazeFromClpbrd();

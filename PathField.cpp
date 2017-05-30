@@ -7,6 +7,7 @@ using namespace std;
 
 PathField::PathField(QQuickItem *parent) : QQuickPaintedItem(parent){
 	setClass(ClassType::HALF);
+	updateGoal(7, 7);
 }
 
 void* PathField::loadFuncOrDie(void *lib, const string& func_name) {
@@ -31,17 +32,15 @@ void* PathField::loadLibOrDie(const string& path) {
 
 void PathField::loadPath(QString lib){
 	const auto loadlib = loadLibOrDie("./libpath/" + lib.toStdString());
-	const auto libGetPath = (int(*)(std::vector<Motion>&, const Map&, const std::pair<uint32_t, uint32_t>&))(loadFuncOrDie(loadlib, "CreateMyPath"));
-	
-	vector<Motion> a;
-	Map b;
-	pair<uint32_t, uint32_t> c;
-	
-	int p = libGetPath(a, b, c);
+	const auto libGetPath = (int(*)(Path&, const Map&, const std::pair<uint32_t, uint32_t>&))(loadFuncOrDie(loadlib, "CreateMyPath"));
+
+	int p = libGetPath(loaded_path, loaded_map, loaded_goal);
 	
 	cout << p << endl;
 	
 	dlclose(loadlib);
+
+	PathField::update();
 }
 
 
@@ -72,10 +71,50 @@ void PathField::plotMetric(QPainter *painter, float x, float y, int d){
 }
 
 
+void PathField::updateMapFromClpbrd(){
+	QString str = QApplication::clipboard()->text();
+	QString testcase;
+
+	// 1. maze output(in text)
+	testcase = "map[][]=";
+	if(str.indexOf(testcase) != 0){
+		ParseHmaze ps = ParseHmaze();
+		int ret = ps.getMap(str, loaded_map);
+		if(ret) std::cout << "Load Error" << std::endl;
+	}
+	for (int i=0; i<32; ++i) {
+		for (int j=0; j<32; ++j) {
+			loaded_map.setReached(i, j);
+		}
+	}
+}
+
+void PathField::updateGoal(uint32_t newx, uint32_t newy){
+	loaded_goal.first = newx;
+	loaded_goal.second = newy;
+}
+
+
+void PathField::drawPath(QPainter *painter){
+	for(int i=0; i<=loaded_path.getPathLength(); ++i){
+		cout << "* " << i << endl;
+		plotMetric(painter, loaded_path.getPosition(i).first, loaded_path.getPosition(i).second, 7);
+	}
+}
+
+
 void PathField::paint(QPainter *painter){
 	QPen pen(QColor("palegreen"), 2);
 	painter->setPen(pen);
 	painter->setRenderHints(QPainter::Antialiasing, true);
-	plotMetric(painter, 90, 90);
+
+	if (loaded_path.getPathLength()!=0) {
+		cout << "Path exist" << endl;
+	} else {
+		cout << "Path NOT exist" << endl;
+	}
+	if (loaded_path.getPathLength() != 0){
+		drawPath(painter);
+	}
 }
 

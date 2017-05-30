@@ -11,16 +11,19 @@
 #include <QBrush>
 #include <QPainter>
 #include <QRect>
+#include <QClipboard>
 
 #include <dlfcn.h>
 #include <iostream>
+#include <cstdio>
 #include <cstdlib>
 #include <string>
 #include <memory>
 
 #include "Map.h"
 #include "Path.h"
-#include "libpath.hpp"
+#include "ParseHmaze.h"
+#include "libpathbasic1.hpp"
 
 enum class ClassType : uint8_t {
 	CLASSIC,
@@ -42,6 +45,10 @@ public:
 	void plotDot(QPainter *painter, int x, int y, int d = 1);
 	void plotMetric(QPainter *painter, float x, float y, int d = 1);
 
+	Q_INVOKABLE void updateMapFromClpbrd();
+	void updateGoal(uint32_t newx, uint32_t newy);
+	void drawPath(QPainter *painter);
+
 	void paint(QPainter *painter);
 
 private:
@@ -50,6 +57,10 @@ private:
 	ClassType field_type;
 	int size_trout;
 	int size_trout_metric;
+
+	Path loaded_path;
+	Map loaded_map;
+	std::pair<uint32_t, uint32_t> loaded_goal;
 
 	const int size_x = 1020;
 	const int size_y = 1020;
