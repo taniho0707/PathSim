@@ -31,18 +31,17 @@ void* PathField::loadLibOrDie(const string& path) {
 
 void PathField::loadPath(QString lib){
 	const auto loadlib = loadLibOrDie("./libpath/" + lib.toStdString());
-	const auto createPathClass = (create_p*)(loadFuncOrDie(loadlib, "CreateMyPath"));
+	const auto libGetPath = (int(*)(std::vector<Motion>&, const Map&, const std::pair<uint32_t, uint32_t>&))(loadFuncOrDie(loadlib, "CreateMyPath"));
 	
-	auto p = createPathClass();
-	
-	Pathdata a;
+	vector<Motion> a;
 	Map b;
 	pair<uint32_t, uint32_t> c;
 	
-	cout << (*p).getPath(a, b, c) << endl;
+	int p = libGetPath(a, b, c);
+	
+	cout << p << endl;
 	
 	dlclose(loadlib);
-	// PathData m_path;
 }
 
 

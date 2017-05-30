@@ -19,7 +19,7 @@
 #include <memory>
 
 #include "Map.h"
-#include "Pathdata.h"
+#include "Path.h"
 #include "libpath.hpp"
 
 enum class ClassType : uint8_t {
@@ -45,7 +45,7 @@ public:
 	void paint(QPainter *painter);
 
 private:
-	Pathdata m_path;
+	std::vector<Motion> m_path;
 
 	ClassType field_type;
 	int size_trout;
