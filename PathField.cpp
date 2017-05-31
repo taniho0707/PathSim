@@ -96,9 +96,10 @@ void PathField::updateGoal(uint32_t newx, uint32_t newy){
 
 
 void PathField::drawPath(QPainter *painter){
+	loaded_path.updatePositions();
 	for(int i=0; i<=loaded_path.getPathLength(); ++i){
-		cout << "* " << i << endl;
-		plotMetric(painter, loaded_path.getPosition(i).first, loaded_path.getPosition(i).second, 7);
+		plotMetric(painter, loaded_path.getPosition(i).first, loaded_path.getPosition(i).second, 1);
+		printf("%2d(%2d): %5f, %5f\n", static_cast<int>(loaded_path.getMotion(i).type), loaded_path.getMotion(i).length, loaded_path.getPosition(i).first, loaded_path.getPosition(i).second);
 	}
 }
 
