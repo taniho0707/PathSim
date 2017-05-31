@@ -73,6 +73,19 @@ void PathField::plotMetric(QPainter *painter, float x, float y, int d){
 			d);
 }
 
+void PathField::plotLine(QPainter *painter, int x1, int y1, int x2, int y2){
+	painter->drawLine(x1-0.5f+30, 1020-(y1-0.5f)-30, x2-0.5f+30, 1020-(y2-0.5f)-30);
+}
+
+void PathField::plotLineMetric(QPainter *painter, float x1, float y1, float x2, float y2){
+	plotLine(painter,
+			 static_cast<int>(static_cast<float>(x1-1) * static_cast<float>(size_x/(size_trout+2)) / (size_trout_metric)),
+			 static_cast<int>(static_cast<float>(y1-1) * static_cast<float>(size_x/(size_trout+2)) / (size_trout_metric)),
+			 static_cast<int>(static_cast<float>(x2-1) * static_cast<float>(size_x/(size_trout+2)) / (size_trout_metric)),
+			 static_cast<int>(static_cast<float>(y2-1) * static_cast<float>(size_x/(size_trout+2)) / (size_trout_metric))
+		);
+}
+
 
 void PathField::updateMapFromClpbrd(){
 	QString str = QApplication::clipboard()->text();
@@ -99,9 +112,16 @@ void PathField::updateGoal(uint32_t newx, uint32_t newy){
 
 
 void PathField::drawPath(QPainter *painter){
+	QPen pendot(QColor("palegreen"), 2);
+	QPen penline(QColor("moccasin"), 1);
 	loaded_path.updatePositions();
-	for(int i=0; i<=loaded_path.getPathLength(); ++i){
+	pair<float, float> lastpos{45, 45};
+	for(int i=0; i<=loaded_path.getPathLength() + 1; ++i){
+		painter->setPen(pendot);
 		plotMetric(painter, loaded_path.getPosition(i).first, loaded_path.getPosition(i).second, 1);
+		painter->setPen(penline);
+		plotLineMetric(painter, lastpos.first, lastpos.second, loaded_path.getPosition(i).first, loaded_path.getPosition(i).second);
+		lastpos = loaded_path.getPosition(i);
 		printf("%2d(%2d): %5f, %5f\n", static_cast<int>(loaded_path.getMotion(i).type), loaded_path.getMotion(i).length, loaded_path.getPosition(i).first, loaded_path.getPosition(i).second);
 	}
 }

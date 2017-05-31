@@ -44,6 +44,8 @@ public:
 	void setClass(ClassType type);
 	void plotDot(QPainter *painter, int x, int y, int d = 1);
 	void plotMetric(QPainter *painter, float x, float y, int d = 1);
+	void plotLine(QPainter *painter, int x1, int y1, int x2, int y2);
+	void plotLineMetric(QPainter *painter, float x1, float y1, float x2, float y2);
 
 	Q_INVOKABLE void updateMapFromClpbrd();
 	void updateGoal(uint32_t newx, uint32_t newy);
