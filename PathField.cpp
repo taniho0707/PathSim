@@ -60,14 +60,17 @@ void PathField::setClass(ClassType type){
 
 void PathField::plotDot(QPainter *painter, int x, int y, int d){
 	if (d == 1){
-		painter->drawPoint(x-(d-1)/2+30, 1020-(y-(d-1)/2)-30);
+		painter->drawPoint(x-static_cast<float>(d-1)/2.0f+30, 1020-(y-static_cast<float>(d-1)/2.0f)-30);
 	} else {
 		painter->drawEllipse(x-(d-1)/2+30, 1020-(y-(d-1)/2)-30, d, d);
 	}
 }
 
 void PathField::plotMetric(QPainter *painter, float x, float y, int d){
-	plotDot(painter, static_cast<int>((x-1)*static_cast<float>(size_x/size_trout)/(size_trout_metric)), static_cast<int>(y*static_cast<float>(size_y/size_trout)/(size_trout_metric)), d);
+	plotDot(painter,
+			static_cast<int>(static_cast<float>(x-1) * static_cast<float>(size_x/(size_trout+2)) / (size_trout_metric)),
+			static_cast<int>(static_cast<float>(y)	 * static_cast<float>(size_y/(size_trout+2)) / (size_trout_metric)),
+			d);
 }
 
 
