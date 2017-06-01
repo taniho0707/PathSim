@@ -73,7 +73,7 @@ ApplicationWindow{
             text: "File(maze, png)"
             onClicked: {
                 mazefield.loadMazeFromFile("./maze/" + combo_file.currentText);
-                /* pathfield.loadMazeFromFile(combo_file.currentText); */
+                pathfield.updateMapFromFile("./maze/" + combo_file.currentText);
             }
         }
         ComboBox {

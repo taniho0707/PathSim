@@ -48,6 +48,7 @@ public:
 	void plotLineMetric(QPainter *painter, float x1, float y1, float x2, float y2);
 
 	Q_INVOKABLE void updateMapFromClpbrd();
+	Q_INVOKABLE void updateMapFromFile(QString str);
 	void updateGoal(uint32_t newx, uint32_t newy);
 	void drawPath(QPainter *painter);
 

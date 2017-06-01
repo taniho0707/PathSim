@@ -105,6 +105,24 @@ void PathField::updateMapFromClpbrd(){
 	}
 }
 
+void PathField::updateMapFromFile(QString filename){
+	QFile file(filename);
+	file.open(QIODevice::ReadOnly);
+	QDataStream in(&file);
+	float sizemetric;
+	/// @todo 迷路サイズを保持させる
+	in >> sizemetric;
+	for (int i=0; i<31; ++i) {
+		in >> loaded_map.column[i];
+	}
+	for (int i=0; i<31; ++i) {
+		in >> loaded_map.row[i];
+	}
+	for (int i=0; i<32; ++i) {
+		in >> loaded_map.reached[i];
+	}
+}
+
 void PathField::updateGoal(uint32_t newx, uint32_t newy){
 	loaded_goal.first = newx;
 	loaded_goal.second = newy;
