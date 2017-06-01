@@ -48,9 +48,9 @@ void MazeField::setSize(const int &mazesize){
 
 
 void MazeField::loadMaze(const int& m){
-	if(m == 1000) MazeField::loadMazeFromClpbrd();
-	else if(m == 2000) MazeField::loadMazeFromFile();
-	else MazeField::loadMazeFromNFC(m);
+	// if(m == 1000) MazeField::loadMazeFromClpbrd();
+	// else if(m == 2000) MazeField::loadMazeFromFile();
+	// else MazeField::loadMazeFromNFC(m);
 }
 
 void MazeField::loadMazeFromClpbrd(){
@@ -72,8 +72,40 @@ void MazeField::loadMazeFromClpbrd(){
 	MazeField::update();
 }
 
-void MazeField::loadMazeFromFile(){
-	
+void MazeField::loadMazeFromFile(QString filename){
+	QFile file(filename);
+	file.open(QIODevice::ReadOnly);
+	QDataStream in(&file);
+	float sizemetric;
+	/// @todo 迷路サイズを保持させる
+	in >> sizemetric;
+	for (int i=0; i<31; ++i) {
+		in >> m_map.column[i];
+	}
+	for (int i=0; i<31; ++i) {
+		in >> m_map.row[i];
+	}
+	for (int i=0; i<32; ++i) {
+		in >> m_map.reached[i];
+	}
+	MazeField::update();
+}
+
+void MazeField::saveMazeToFile(QString filename){
+	QFile file(filename);
+	file.open(QIODevice::WriteOnly);
+	QDataStream out(&file);
+	/// @todo 迷路サイズを保持させる
+	out << 45.0f;
+	for (int i=0; i<31; ++i) {
+		out << (quint32)(m_map.column[i]);
+	}
+	for (int i=0; i<31; ++i) {
+		out << (quint32)(m_map.row[i]);
+	}
+	for (int i=0; i<32; ++i) {
+		out << (quint32)(m_map.reached[i]);
+	}
 }
 
 void MazeField::loadMazeFromNFC(const int& m){

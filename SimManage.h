@@ -32,6 +32,7 @@ public:
 	Q_INVOKABLE void test();
 
 	Q_INVOKABLE QStringList getPathfileList();
+	Q_INVOKABLE QStringList getMazefileList();
 
 private:
 	Map m_map;

@@ -13,6 +13,7 @@
 #include <QRect>
 #include <QClipboard>
 #include <QStaticText>
+#include <QDataStream>
 
 #include <iostream>
 
@@ -36,8 +37,10 @@ public:
 
 	void loadMaze(const int& m);
 	Q_INVOKABLE void loadMazeFromClpbrd();
-	void loadMazeFromFile();
+	Q_INVOKABLE void loadMazeFromFile(QString filename);
 	void loadMazeFromNFC(const int& m);
+
+	Q_INVOKABLE void saveMazeToFile(QString filename);
 
 	/* /// @todo */
 	/* void setClass(ClassType); */
@@ -49,6 +52,5 @@ private:
     int m_size;
 
 	Map m_map;
-
 
 };

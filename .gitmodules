@@ -4,3 +4,6 @@
 [submodule "libpath"]
 	path = libpath
 	url = git@github.com:taniho0707/libpath.git
+[submodule "maze"]
+	path = maze
+	url = git@github.com:taniho0707/maze.git
