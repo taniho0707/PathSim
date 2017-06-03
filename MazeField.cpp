@@ -42,6 +42,14 @@ void MazeField::paint(QPainter *painter){
 	}
 }
 
+void MazeField::setParams(){
+	if (m_map.getType() == ClassType::CLASSIC) {
+		setSize(16);
+	} else {
+		setSize(32);
+	}
+}
+
 void MazeField::setSize(const int &mazesize){
 	MazeField::m_size = mazesize;
 }
@@ -57,6 +65,7 @@ void MazeField::loadMazeFromClpbrd(){
 	QString str = QApplication::clipboard()->text();
 	QString testcase;
 
+	m_map.format();
 	// 1. maze output(in text)
 	testcase = "map[][]=";
 	if(str.indexOf(testcase) != 0){
@@ -69,16 +78,27 @@ void MazeField::loadMazeFromClpbrd(){
 			m_map.setReached(i, j);
 		}
 	}
-	MazeField::update();
+
+	/// @todo 任意のゴール座標に対応させる
+	setParams();
+	update();
 }
 
 void MazeField::loadMazeFromFile(QString filename){
 	QFile file(filename);
 	file.open(QIODevice::ReadOnly);
 	QDataStream in(&file);
-	float sizemetric;
-	/// @todo 迷路サイズを保持させる
-	in >> sizemetric;
+	m_map.format();
+	uint8_t tmp8;
+	in >> tmp8;
+	m_map.setType(static_cast<ClassType>(tmp8));
+	in >> tmp8;
+	for (int i=0; i<tmp8; ++i) {
+		int16_t tmp16x, tmp16y;
+		in >> tmp16x;
+		in >> tmp16y;
+		m_map.addGoals(tmp16x, tmp16y);
+	}
 	for (int i=0; i<31; ++i) {
 		in >> m_map.column[i];
 	}
@@ -88,15 +108,20 @@ void MazeField::loadMazeFromFile(QString filename){
 	for (int i=0; i<32; ++i) {
 		in >> m_map.reached[i];
 	}
-	MazeField::update();
+	setParams();
+	update();
 }
 
 void MazeField::saveMazeToFile(QString filename){
 	QFile file(filename);
 	file.open(QIODevice::WriteOnly);
 	QDataStream out(&file);
-	/// @todo 迷路サイズを保持させる
-	out << 45.0f;
+	out << static_cast<uint8_t>(m_map.getType());
+	out << m_map.goals.size();
+	for (auto ite : m_map.goals.curs) {
+		out << ite.first;
+		out << ite.second;
+	}
 	for (int i=0; i<31; ++i) {
 		out << (quint32)(m_map.column[i]);
 	}

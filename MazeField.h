@@ -31,6 +31,7 @@ class MazeField : public QQuickPaintedItem{
 public:
     explicit MazeField(QQuickItem *parent = 0);
 
+	void setParams();
     int getSize() const { return m_size; }
     void setSize(const int &mazesize);
 	Q_INVOKABLE Map getMap() const { return m_map; }
@@ -41,10 +42,6 @@ public:
 	void loadMazeFromNFC(const int& m);
 
 	Q_INVOKABLE void saveMazeToFile(QString filename);
-
-	/* /// @todo */
-	/* void setClass(ClassType); */
-	/* void drawWalls(Map); */
 
     void paint(QPainter *painter);
 

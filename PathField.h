@@ -25,12 +25,6 @@
 #include "ParseHmaze.h"
 #include "libpathbasic1.hpp"
 
-enum class ClassType : uint8_t {
-	CLASSIC,
-	HALF,
-	QUARTER,
-};
-
 class PathField : public QQuickPaintedItem{
 	Q_OBJECT
 
@@ -41,6 +35,7 @@ public:
 
 	Q_INVOKABLE void loadPath(QString lib);
 
+	void setParams();
 	void setClass(ClassType type);
 	void plotDot(QPainter *painter, int x, int y, int d = 1);
 	void plotMetric(QPainter *painter, float x, float y, int d = 1);
@@ -49,7 +44,6 @@ public:
 
 	Q_INVOKABLE void updateMapFromClpbrd();
 	Q_INVOKABLE void updateMapFromFile(QString str);
-	void updateGoal(uint32_t newx, uint32_t newy);
 	void drawPath(QPainter *painter);
 
 	void paint(QPainter *painter);
@@ -63,6 +57,7 @@ private:
 
 	Path loaded_path;
 	Map loaded_map;
+	// 実際に使用するゴールマスのみを保存
 	std::pair<uint32_t, uint32_t> loaded_goal;
 
 	const int size_x = 1020;

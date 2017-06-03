@@ -7,7 +7,6 @@ using namespace std;
 
 PathField::PathField(QQuickItem *parent) : QQuickPaintedItem(parent){
 	setClass(ClassType::HALF);
-	updateGoal(7, 7);
 }
 
 void* PathField::loadFuncOrDie(void *lib, const string& func_name) {
@@ -43,6 +42,11 @@ void PathField::loadPath(QString lib){
 	PathField::update();
 }
 
+
+void PathField::setParams(){
+	field_type = loaded_map.getType();
+	setClass(field_type);
+}
 
 void PathField::setClass(ClassType type){
 	field_type = type;
@@ -103,15 +107,27 @@ void PathField::updateMapFromClpbrd(){
 			loaded_map.setReached(i, j);
 		}
 	}
+	setParams();
 }
 
 void PathField::updateMapFromFile(QString filename){
 	QFile file(filename);
 	file.open(QIODevice::ReadOnly);
 	QDataStream in(&file);
-	float sizemetric;
-	/// @todo 迷路サイズを保持させる
-	in >> sizemetric;
+	loaded_map.format();
+	uint8_t tmp8;
+	in >> tmp8;
+	loaded_map.setType(static_cast<ClassType>(tmp8));
+	in >> tmp8;
+	int16_t tmp16x, tmp16y;
+	for (int i=0; i<tmp8; ++i) {
+		in >> tmp16x;
+		in >> tmp16y;
+		loaded_map.addGoals(tmp16x, tmp16y);
+	}
+	/// @todo 任意のゴール座標に対応させる
+	loaded_goal.first = 7;
+	loaded_goal.second = 7;
 	for (int i=0; i<31; ++i) {
 		in >> loaded_map.column[i];
 	}
@@ -121,11 +137,7 @@ void PathField::updateMapFromFile(QString filename){
 	for (int i=0; i<32; ++i) {
 		in >> loaded_map.reached[i];
 	}
-}
-
-void PathField::updateGoal(uint32_t newx, uint32_t newy){
-	loaded_goal.first = newx;
-	loaded_goal.second = newy;
+	setParams();
 }
 
 
@@ -146,7 +158,7 @@ void PathField::drawPath(QPainter *painter){
 
 
 void PathField::paint(QPainter *painter){
-	QPen pen(QColor("palegreen"), 2);
+	QPen pen(QColor("palegreen"), 1);
 	painter->setPen(pen);
 	painter->setRenderHints(QPainter::Antialiasing, true);
 

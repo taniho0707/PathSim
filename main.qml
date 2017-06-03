@@ -51,6 +51,15 @@ ApplicationWindow{
             text: qsTr("import")
         }
         Button {
+            id: button_reload_import
+            x: 140; y: 10
+            text: qsTr("reload");
+            onClicked: {
+                combo_algorithm.model = manage.getPathfileList();
+                combo_file.model = manage.getMazefileList();
+            }
+        }
+        Button {
             id: button_clipboard
             x:30; y:40
             width: 120
@@ -70,7 +79,7 @@ ApplicationWindow{
             id: button_file
             x:90; y:100
             width: 120
-            text: "File(maze, png)"
+            text: "File(maze)"
             onClicked: {
                 mazefield.loadMazeFromFile("./maze/" + combo_file.currentText);
                 pathfield.updateMapFromFile("./maze/" + combo_file.currentText);
@@ -163,6 +172,7 @@ ApplicationWindow{
             text: "File(.maze)"
             onClicked: {
                 mazefield.saveMazeToFile("./maze/" + text_exportfile.text + ".maze");
+                manage.getMazefileList();
             }
         }
     }

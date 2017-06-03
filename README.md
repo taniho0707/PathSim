@@ -10,7 +10,9 @@ Qtの勉強用に作るのでほどほど性能で満足する可能性大。
 
 .mazeファイルについて
 ------
-4byte: [float] 一辺の長さ(mm)
+1byte: [uint8\_t] ClassType
+1byte: [uint8\_t] n = MultiplePosition.size()
+nx4byte: [int16\_t, int16\_t] (goalX, goalY)
 4x31byte: [uint32\_t] column
 4x31byte: [uint32\_t] row
 4x32byte: [uint32\_t] reached
