@@ -54,6 +54,16 @@ void MazeField::setSize(const int &mazesize){
 	MazeField::m_size = mazesize;
 }
 
+void MazeField::setGoals(int x1, int y1, int x2, int y2){
+	m_map.goals.clear();
+	if (x1 < x2 || y1 < y2) return;
+	for (int i=x1; i<=x2; ++i) {
+		for (int j=y1; j<=y2; ++j) {
+			m_map.addGoal(i, j);
+		}
+	}
+}
+
 
 void MazeField::loadMaze(const int& m){
 	// if(m == 1000) MazeField::loadMazeFromClpbrd();
@@ -97,7 +107,7 @@ void MazeField::loadMazeFromFile(QString filename){
 		int16_t tmp16x, tmp16y;
 		in >> tmp16x;
 		in >> tmp16y;
-		m_map.addGoals(tmp16x, tmp16y);
+		m_map.addGoal(tmp16x, tmp16y);
 	}
 	for (int i=0; i<31; ++i) {
 		in >> m_map.column[i];

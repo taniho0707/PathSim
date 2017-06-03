@@ -62,6 +62,17 @@ void PathField::setClass(ClassType type){
 	}
 }
 
+void PathField::setGoals(int x1, int y1, int x2, int y2){
+	if (x1 < x2 || y1 < y2) return;
+	loaded_map.goals.clear();
+	for (int i=x1; i<=x2; ++i) {
+		for (int j=y1; j<=y2; ++j) {
+			loaded_map.addGoal(i, j);
+		}
+	}
+}
+
+
 void PathField::plotDot(QPainter *painter, int x, int y, int d){
 	if (d == 1){
 		painter->drawPoint(x-static_cast<float>(d-1)/2.0f+30, 1020-(y-static_cast<float>(d-1)/2.0f)-30);
@@ -123,7 +134,7 @@ void PathField::updateMapFromFile(QString filename){
 	for (int i=0; i<tmp8; ++i) {
 		in >> tmp16x;
 		in >> tmp16y;
-		loaded_map.addGoals(tmp16x, tmp16y);
+		loaded_map.addGoal(tmp16x, tmp16y);
 	}
 	/// @todo 任意のゴール座標に対応させる
 	loaded_goal.first = 7;

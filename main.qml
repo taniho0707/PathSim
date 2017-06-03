@@ -98,10 +98,70 @@ ApplicationWindow{
             text: "Serial"
         }
     }
+
+    Rectangle {
+        id: rect_mazesize
+        x: 1060; y: 210
+        width: 250; height: 90
+        color: "whitesmoke"
+        radius: 5
+        Label {
+            x: 10; y: 10
+            id: label_mazesize
+            font.pixelSize: 18
+            text: qsTr("Mazesize")
+        }
+        TextField {
+            id: text_mazesizex1
+            x: 30; y: 40
+            width: 30
+            placeholderText: qsTr("x1")
+        }
+        TextField {
+            id: text_mazesizey1
+            x: 65; y: 40
+            width: 30
+            placeholderText: qsTr("y1")
+        }
+        Label {
+            x: 100; y: 45
+            text: qsTr("x")
+        }
+        TextField {
+            id: text_mazesizex2
+            x: 110; y: 40
+            width: 30
+            placeholderText: qsTr("x2")
+        }
+        TextField {
+            id: text_mazesizey2
+            x: 145; y: 40
+            width: 30
+            placeholderText: qsTr("y2")
+        }
+        Button {
+            id: button_mazesize
+            x: 190; y: 40
+            width: 30
+            text: qsTr("Set")
+            onClicked: {
+                mazefield.setGoals(1*text_mazesizex1.text, 1*text_mazesizey1.text, 1*text_mazesizex2.text, 1*text_mazesizey2.text);
+                pathfield.setGoals(1*text_mazesizex1.text, 1*text_mazesizey1.text, 1*text_mazesizex2.text, 1*text_mazesizey2.text);
+                text_mazesizex1.text = "";
+                text_mazesizey1.text = "";
+                text_mazesizex2.text = "";
+                text_mazesizey2.text = "";
+                text_mazesizex1.focus = false;
+                text_mazesizey1.focus = false;
+                text_mazesizex2.focus = false;
+                text_mazesizey2.focus = false;
+            }
+        }
+    }
     
     Rectangle {
         id: rect_algorithm
-        x: 1060; y: 210
+        x: 1060; y: 320
         width: 250; height: 90
         color: "whitesmoke"
         radius: 5
@@ -121,7 +181,7 @@ ApplicationWindow{
     }
     
     Rectangle {
-        x: 1060; y: 320
+        x: 1060; y: 430
         width: 180; height: 90
         color: "whitesmoke"
         radius: 5
@@ -143,7 +203,7 @@ ApplicationWindow{
     }
 
     Rectangle {
-        x: 1060; y: 430
+        x: 1060; y: 540
         width: 220; height: 110
         color: "whitesmoke"
         radius: 5

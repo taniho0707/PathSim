@@ -37,6 +37,8 @@ public:
 
 	void setParams();
 	void setClass(ClassType type);
+	Q_INVOKABLE void setGoals(int x1, int y1, int x2, int y2);
+
 	void plotDot(QPainter *painter, int x, int y, int d = 1);
 	void plotMetric(QPainter *painter, float x, float y, int d = 1);
 	void plotLine(QPainter *painter, int x1, int y1, int x2, int y2);
