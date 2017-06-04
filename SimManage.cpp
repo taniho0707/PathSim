@@ -13,39 +13,37 @@ void SimManage::test(){
 }
 
 QStringList SimManage::getPathfileList(){
+	const char *dirname = "./libpath/";
+	struct dirent **namelist;
 	QStringList str = QStringList();
 	QRegExp reg(".so$");
-	DIR* dp=opendir("./libpath/");
-	if (dp!=NULL){
-		struct dirent* dent;
-		int i=0;
-		do{
-			dent = readdir(dp);
-			if (dent!=NULL && (reg.indexIn(dent->d_name) >= 0)){
-				str << dent->d_name;
+	int r = scandir(dirname, &namelist, NULL, alphasort);
+	if(r != -1) {
+		for (int i=0; i<r; ++i) {
+			if (namelist[i]!=NULL && (reg.indexIn(namelist[i]->d_name) >= 0)){
+				str << namelist[i]->d_name;
 			}
-			++i;
-		} while(dent!=NULL);
-		closedir(dp);
+			free(namelist[i]);
+		}
+		free(namelist);
 	}
 	return str;
 }
 
 QStringList SimManage::getMazefileList(){
+	const char *dirname = "./maze/";
+	struct dirent **namelist;
 	QStringList str = QStringList();
 	QRegExp reg(".maze$");
-	DIR* dp=opendir("./maze/");
-	if (dp!=NULL){
-		struct dirent* dent;
-		int i=0;
-		do{
-			dent = readdir(dp);
-			if (dent!=NULL && (reg.indexIn(dent->d_name) >= 0)){
-				str << dent->d_name;
+	int r = scandir(dirname, &namelist, NULL, alphasort);
+	if(r != -1) {
+		for (int i=0; i<r; ++i) {
+			if (namelist[i]!=NULL && (reg.indexIn(namelist[i]->d_name) >= 0)){
+				str << namelist[i]->d_name;
 			}
-			++i;
-		} while(dent!=NULL);
-		closedir(dp);
+			free(namelist[i]);
+		}
+		free(namelist);
 	}
 	return str;
 }
