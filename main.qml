@@ -67,6 +67,7 @@ ApplicationWindow{
             onClicked: {
                 mazefield.loadMazeFromClpbrd();
                 pathfield.updateMapFromClpbrd();
+                pathfield.clearPath();
             }
         }
         ComboBox {
@@ -83,6 +84,7 @@ ApplicationWindow{
             onClicked: {
                 mazefield.loadMazeFromFile("./maze/" + combo_file.currentText);
                 pathfield.updateMapFromFile("./maze/" + combo_file.currentText);
+                pathfield.clearPath();
             }
         }
         ComboBox {
@@ -155,6 +157,7 @@ ApplicationWindow{
                 text_mazesizey1.focus = false;
                 text_mazesizex2.focus = false;
                 text_mazesizey2.focus = false;
+                pathfield.clearPath();
             }
         }
     }

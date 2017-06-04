@@ -7,6 +7,7 @@ using namespace std;
 
 PathField::PathField(QQuickItem *parent) : QQuickPaintedItem(parent){
 	setClass(ClassType::HALF);
+	clearflag = false;
 }
 
 void* PathField::loadFuncOrDie(void *lib, const string& func_name) {
@@ -179,18 +180,21 @@ void PathField::drawPath(QPainter *painter){
 	}
 }
 
+void PathField::clearPath(){
+	clearflag = true;
+	update();
+}
+
 
 void PathField::paint(QPainter *painter){
 	QPen pen(QColor("palegreen"), 1);
 	painter->setPen(pen);
 	painter->setRenderHints(QPainter::Antialiasing, true);
 
-	if (loaded_path.getPathLength()!=0) {
-		cout << "Path exist" << endl;
+//	if (loaded_path.getPathLength() != 0){
+	if (clearflag) {
+		clearflag = false;
 	} else {
-		cout << "Path NOT exist" << endl;
-	}
-	if (loaded_path.getPathLength() != 0){
 		drawPath(painter);
 	}
 }

@@ -47,6 +47,7 @@ public:
 	Q_INVOKABLE void updateMapFromClpbrd();
 	Q_INVOKABLE void updateMapFromFile(QString str);
 	void drawPath(QPainter *painter);
+	Q_INVOKABLE void clearPath();
 
 	void paint(QPainter *painter);
 
@@ -56,6 +57,8 @@ private:
 	ClassType field_type;
 	int size_trout;
 	int size_trout_metric;
+
+	bool clearflag;
 
 	Path loaded_path;
 	Map loaded_map;
