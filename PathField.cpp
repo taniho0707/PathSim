@@ -63,11 +63,16 @@ void PathField::setClass(ClassType type){
 }
 
 void PathField::setGoals(int x1, int y1, int x2, int y2){
-	if (x1 < x2 || y1 < y2) return;
+	if (x2 < x1 || y2 < y1) return;
 	loaded_map.goals.clear();
 	for (int i=x1; i<=x2; ++i) {
 		for (int j=y1; j<=y2; ++j) {
 			loaded_map.addGoal(i, j);
+			/// @todo 任意のゴール座標に対応させる
+			if (i == x1 && j == y1) {
+				loaded_goal.first = i;
+				loaded_goal.second = j;
+			}
 		}
 	}
 }
@@ -106,6 +111,10 @@ void PathField::updateMapFromClpbrd(){
 	QString str = QApplication::clipboard()->text();
 	QString testcase;
 
+	loaded_map.format();
+	loaded_goal.first = 7;
+	loaded_goal.second = 7;
+	
 	// 1. maze output(in text)
 	testcase = "map[][]=";
 	if(str.indexOf(testcase) != 0){
@@ -126,6 +135,7 @@ void PathField::updateMapFromFile(QString filename){
 	file.open(QIODevice::ReadOnly);
 	QDataStream in(&file);
 	loaded_map.format();
+	loaded_map.goals.clear();
 	uint8_t tmp8;
 	in >> tmp8;
 	loaded_map.setType(static_cast<ClassType>(tmp8));
@@ -135,10 +145,12 @@ void PathField::updateMapFromFile(QString filename){
 		in >> tmp16x;
 		in >> tmp16y;
 		loaded_map.addGoal(tmp16x, tmp16y);
+		/// @todo 任意のゴール座標に対応させる
+		if (i == 0) {
+			loaded_goal.first = tmp16x;
+			loaded_goal.second = tmp16y;
+		}
 	}
-	/// @todo 任意のゴール座標に対応させる
-	loaded_goal.first = 7;
-	loaded_goal.second = 7;
 	for (int i=0; i<31; ++i) {
 		in >> loaded_map.column[i];
 	}

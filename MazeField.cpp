@@ -56,7 +56,7 @@ void MazeField::setSize(const int &mazesize){
 
 void MazeField::setGoals(int x1, int y1, int x2, int y2){
 	m_map.goals.clear();
-	if (x1 < x2 || y1 < y2) return;
+	if (x2 < x1 || y2 < y1) return;
 	for (int i=x1; i<=x2; ++i) {
 		for (int j=y1; j<=y2; ++j) {
 			m_map.addGoal(i, j);
@@ -99,6 +99,7 @@ void MazeField::loadMazeFromFile(QString filename){
 	file.open(QIODevice::ReadOnly);
 	QDataStream in(&file);
 	m_map.format();
+	m_map.goals.clear();
 	uint8_t tmp8;
 	in >> tmp8;
 	m_map.setType(static_cast<ClassType>(tmp8));
@@ -119,6 +120,10 @@ void MazeField::loadMazeFromFile(QString filename){
 		in >> m_map.reached[i];
 	}
 	setParams();
+	std::cout << "goals: " << std::endl;
+	for (auto ite : m_map.goals.curs){
+		std::cout << ite.first << ", " << ite.second << std::endl;
+	}
 	update();
 }
 

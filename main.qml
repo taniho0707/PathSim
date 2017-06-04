@@ -232,7 +232,10 @@ ApplicationWindow{
             text: "File(.maze)"
             onClicked: {
                 mazefield.saveMazeToFile("./maze/" + text_exportfile.text + ".maze");
-                manage.getMazefileList();
+                text_exportfile.text = "";
+                text_exportfile.focus = false;
+                combo_algorithm.model = manage.getPathfileList();
+                combo_file.model = manage.getMazefileList();
             }
         }
     }

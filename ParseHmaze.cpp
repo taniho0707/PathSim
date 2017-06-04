@@ -32,7 +32,6 @@ int ParseHmaze::loadHmap(const QString& str){
 				return 0;
 			} else if(simplified.at(ite) == QChar('}')) {
 				++ ite;
-				++ ite;
 				break;
 			}
 			if(simplified.at(ite+1) == QChar(',') || simplified.at(ite+1) == QChar('}')){
@@ -41,12 +40,6 @@ int ParseHmaze::loadHmap(const QString& str){
 				m_hmap[i][j] = (simplified.at(ite++)).digitValue()*10 + (simplified.at(ite)).digitValue();
 			}
 		}
-	}
-	for(int i=0; i<32; ++i){
-		for(int j=0; j<32; ++j){
-			std::cout << m_hmap[j][31-i] << ", ";
-		}
-		std::cout << std::endl;
 	}
 	return 0;
 }
