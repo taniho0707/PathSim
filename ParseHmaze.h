@@ -12,7 +12,7 @@
 class ParseHmaze{
 private:
 	Map m_map;
-	int m_hmap[16][16];
+	int m_hmap[32][32];
 
 public:
 	ParseHmaze();

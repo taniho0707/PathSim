@@ -6,8 +6,8 @@
 
 ParseHmaze::ParseHmaze(){
 	m_map = Map();
-	for (int i=0; i<16; i++)
-		for (int j=0; j<16; j++)
+	for (int i=0; i<32; i++)
+		for (int j=0; j<32; j++)
 			m_hmap[i][j] = 0;
 }
 ParseHmaze::~ParseHmaze(){
@@ -17,21 +17,36 @@ ParseHmaze::~ParseHmaze(){
 int ParseHmaze::loadHmap(const QString& str){
 	int ite = 0;
 	bool ok;
-	QString testcase = "map[][]=";
-	ite = str.indexOf(testcase);
-	testcase = "{";
-	for(int i=0; i<16; ++i){
-		for(int j=0; j<16; ++j){
-			ite = str.indexOf(testcase, ite);
-			if(str.at(ite+1) == QChar('{')) ite += 1;
+	QString testcase = "{";
+	QString simplified = str;
+	simplified.simplified();
+	simplified.remove(QChar(' '));
+	ite = simplified.indexOf(testcase);
+	for(int i=0; i<32; ++i){
+		for(int j=0; j<33; ++j){
 			++ ite;
-			if(str.at(ite+1) == QChar(',') || str.at(ite+1) == QChar('}')){
-				m_hmap[i][j] = (str.at(ite++)).digitValue();
-			} else {
-				m_hmap[i][j] = (str.at(ite++)).digitValue()*10 + (str.at(ite++)).digitValue();
+			if(simplified.at(ite) == QChar('{') || simplified.at(ite) == QChar(',')) {
+				-- j;
+				continue;
+			} else if(simplified.at(ite) == QChar(';')) {
+				return 0;
+			} else if(simplified.at(ite) == QChar('}')) {
+				++ ite;
+				++ ite;
+				break;
 			}
-			testcase = ",";
+			if(simplified.at(ite+1) == QChar(',') || simplified.at(ite+1) == QChar('}')){
+				m_hmap[i][j] = (simplified.at(ite)).digitValue();
+			} else {
+				m_hmap[i][j] = (simplified.at(ite++)).digitValue()*10 + (simplified.at(ite)).digitValue();
+			}
 		}
+	}
+	for(int i=0; i<32; ++i){
+		for(int j=0; j<32; ++j){
+			std::cout << m_hmap[j][31-i] << ", ";
+		}
+		std::cout << std::endl;
 	}
 	return 0;
 }
@@ -45,8 +60,8 @@ bool ParseHmaze::isExistWall(int x, int y, MazeAngle angle){
 }
 
 int ParseHmaze::convToMap(){
-	for (int i=0; i<16; i++) {
-		for (int j=0; j<16; j++) {
+	for (int i=0; i<32; i++) {
+		for (int j=0; j<32; j++) {
 			if(isExistWall(i, j, MazeAngle::NORTH)) m_map.addSingleWall(i, j, MazeAngle::NORTH);
 			if(isExistWall(i, j, MazeAngle::EAST)) m_map.addSingleWall(i, j, MazeAngle::EAST);
 		}
